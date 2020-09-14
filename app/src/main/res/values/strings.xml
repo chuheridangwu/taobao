@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">TaoBaoJava</string>
+    <string name="text_home">home</string>
+    <string name="text_selected">selected</string>
+    <string name="text_red_packet">red_packet</string>
+    <string name="text_search">search</string>
 </resources>

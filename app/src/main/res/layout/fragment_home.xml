@@ -3,12 +3,54 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <TextView
-        android:text="首页"
+    
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        ></TextView>
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorPrimaryDark"
+        android:gravity="center_vertical">
+        <TextView
+            android:id="@+id/home_log_text"
+            android:layout_alignParentLeft="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SOB"
+            android:textStyle="bold"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:padding="10dp"
+            ></TextView>
+        
+        <ImageView
+            android:id="@+id/home_scan_white"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/scan_white"
+            android:padding="10dp"></ImageView>
 
+        <EditText
+            android:layout_toRightOf="@id/home_log_text"
+            android:layout_toLeftOf="@id/home_scan_white"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:hint="输入你...商品"
+            android:textColor="@color/colorGrey"
+            android:textSize="14sp"
+            android:focusable="false"
+            android:paddingLeft="10dp"
+            android:layout_centerVertical="true"
+            android:background="@drawable/home_edit_bg"
+            ></EditText>
+    </RelativeLayout>
+    
+    <TableLayout
+        android:id="@+id/home_indicator"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"></TableLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></androidx.viewpager2.widget.ViewPager2>
 </LinearLayout>

@@ -14,7 +14,7 @@
     ></item>
 <item android:title="@string/text_search"
     android:id="@+id/search"
-    android:icon="@mipmap/select_normal"
+    android:icon="@mipmap/search_normal"
     ></item>
 
 </menu>

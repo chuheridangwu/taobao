@@ -1,8 +1,10 @@
-package com.cool.taobaojava;
+package com.cool.taobaojava.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.cool.taobaojava.R;
 
 public class MainActivity extends AppCompatActivity {
 

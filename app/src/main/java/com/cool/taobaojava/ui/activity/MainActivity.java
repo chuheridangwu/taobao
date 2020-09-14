@@ -2,6 +2,7 @@ package com.cool.taobaojava.ui.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
@@ -12,12 +13,20 @@ import android.view.View;
 
 import com.cool.taobaojava.R;
 import com.cool.taobaojava.ui.fragment.HomeFragment;
+import com.cool.taobaojava.ui.fragment.RedPacketFragment;
+import com.cool.taobaojava.ui.fragment.SearchFragment;
+import com.cool.taobaojava.ui.fragment.SelectedFragment;
 import com.cool.taobaojava.utils.LogUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView mNavigationView;
+    private HomeFragment mHomeFragment;
+    private RedPacketFragment mRedPacketFragment;
+    private SelectedFragment mSelectedFragment;
+    private SearchFragment mSearchFragment;
+    private FragmentManager mFm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,15 +45,19 @@ public class MainActivity extends AppCompatActivity {
                 switch (item.getItemId()){
                     case R.id.home:
                         LogUtils.d(MainActivity.class,"首页");
+                        switchFragment(mHomeFragment);
                         break;
                     case R.id.selected:
                         LogUtils.i(MainActivity.class,"选中");
+                        switchFragment(mSelectedFragment);
                         break;
                     case R.id.red_packet:
                         LogUtils.e(MainActivity.class,"红包");
+                        switchFragment(mRedPacketFragment);
                         break;
                     case R.id.search:
                         LogUtils.w(MainActivity.class,"搜索");
+                        switchFragment(mSearchFragment);
                         break;
                 }
 
@@ -56,15 +69,19 @@ public class MainActivity extends AppCompatActivity {
     private void initView() {
         mNavigationView = findViewById(R.id.main_navigation_bar);
 
-        // 创建fragment
-        HomeFragment home = new HomeFragment();
-        // 获取fragment管理器
-        FragmentManager manager = getSupportFragmentManager();
-        // 开启事务
-        FragmentTransaction transaction =  manager.beginTransaction();
-        // 添加 或 替换 fragment
-        transaction.add(R.id.main_page_container,home);
-        // 提交事务
+        mHomeFragment = new HomeFragment();
+        mRedPacketFragment = new RedPacketFragment();
+        mSelectedFragment = new SelectedFragment();
+        mSearchFragment = new SearchFragment();
+        mFm = getSupportFragmentManager();
+
+        switchFragment(mHomeFragment);
+    }
+
+    // 切换Fragment
+    private void switchFragment(Fragment fragment) {
+        FragmentTransaction transaction = mFm.beginTransaction();
+        transaction.replace(R.id.main_page_container,fragment);
         transaction.commit();
     }
 }

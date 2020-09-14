@@ -12,10 +12,9 @@ import androidx.fragment.app.Fragment;
 import com.cool.taobaojava.R;
 import com.cool.taobaojava.base.BaseFragment;
 
-public class HomeFragment extends BaseFragment {
-
+public class SelectedFragment extends BaseFragment {
     @Override
     protected int getRootViewResId() {
-        return R.layout.fragment_home;
+        return R.layout.fragment_selected;
     }
 }

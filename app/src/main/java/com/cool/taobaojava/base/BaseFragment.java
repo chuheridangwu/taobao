@@ -13,10 +13,11 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view =  loadRootView(inflater,container,savedInstanceState);
+        View rootView =  loadRootView(inflater,container,savedInstanceState);
+        initView(rootView);
         initPresenter();
         loadData();
-        return view;
+        return rootView;
     }
 
     @Override
@@ -27,6 +28,11 @@ public abstract class BaseFragment extends Fragment {
 
     // 释放资源
     protected void release() {
+    }
+
+    // 初始化view
+    protected void initView(View rootView){
+
     }
 
     // 创建Presenter

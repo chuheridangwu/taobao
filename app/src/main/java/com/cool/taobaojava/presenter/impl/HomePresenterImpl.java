@@ -16,6 +16,8 @@ import retrofit2.Retrofit;
 
 public class HomePresenterImpl implements IHomePresenter {
 
+    private IHomeCallBack mCallBack;
+
     @Override
     public void getCategories() {
         Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
@@ -27,7 +29,9 @@ public class HomePresenterImpl implements IHomePresenter {
                 // 返回数据
                 if (response.code() == HttpURLConnection.HTTP_OK){
                     Categories categories = response.body();
-                    LogUtils.d(HomePresenterImpl.this,categories.toString());
+                    if (mCallBack!=null) {
+                        mCallBack.onCategoriesLoaded(categories);
+                    }
 
                 }else {
 
@@ -44,11 +48,11 @@ public class HomePresenterImpl implements IHomePresenter {
 
     @Override
     public void registerCallback(IHomeCallBack callBack) {
-
+        mCallBack = callBack;
     }
 
     @Override
     public void unregisterCallback(IHomeCallBack callBack) {
-
+        mCallBack = null;
     }
 }

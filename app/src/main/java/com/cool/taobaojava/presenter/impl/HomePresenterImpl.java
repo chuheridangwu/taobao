@@ -20,6 +20,8 @@ public class HomePresenterImpl implements IHomePresenter {
 
     @Override
     public void getCategories() {
+        LogUtils.e(this,"开始加载数据");
+
         Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
         Api api = retrofit.create(Api.class);
         Call<Categories> task = api.getCategories();
@@ -32,9 +34,10 @@ public class HomePresenterImpl implements IHomePresenter {
                     if (mCallBack!=null) {
                         mCallBack.onCategoriesLoaded(categories);
                     }
+                    LogUtils.e(this,"加载数据成功" + categories.toString());
 
                 }else {
-
+                    LogUtils.e(this,"加载数据失败");
                 }
             }
 
@@ -42,6 +45,7 @@ public class HomePresenterImpl implements IHomePresenter {
             public void onFailure(Call<Categories> call, Throwable t) {
                 // 加载失败的结果
                 //TODO
+                LogUtils.e(this,"加载数据错误");
             }
         });
     }

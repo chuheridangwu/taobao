@@ -49,7 +49,12 @@
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/home_indicator"
         android:layout_width="wrap_content"
-        app:tabTextColor="@color/gray"
+        app:tabMode="scrollable"
+        app:tabBackground="@color/colorPrimaryDark"
+        app:tabSelectedTextColor="@color/colorTabSelected"
+        app:tabIndicatorColor="@color/colorTabSelected"
+        app:tabTextColor="@color/colorTabNormal"
+        app:tabRippleColor="@color/colorTabNormal"
         android:layout_height="30dp"></com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager2.widget.ViewPager2

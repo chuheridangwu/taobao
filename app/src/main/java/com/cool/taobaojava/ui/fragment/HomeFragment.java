@@ -28,7 +28,7 @@ public class HomeFragment extends BaseFragment  implements IHomeCallBack {
     // 加载数据
     @Override
     protected void loadData() {
-
+        mHomePresenter.getCategories();
     }
 
     // 创建Presenter
@@ -41,7 +41,7 @@ public class HomeFragment extends BaseFragment  implements IHomeCallBack {
     // 返回的数据
     @Override
     public void onCategoriesLoaded(Categories categories) {
-        mHomePresenter.getCategories();
+
     }
 
     // 取消回调注册

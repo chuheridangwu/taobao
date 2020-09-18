@@ -47,6 +47,7 @@ public class HomeFragment extends BaseFragment  implements IHomeCallBack {
     // 加载数据
     @Override
     protected void loadData() {
+        setUpState(State.LOADING);
         mHomePresenter.getCategories();
     }
 
@@ -60,7 +61,7 @@ public class HomeFragment extends BaseFragment  implements IHomeCallBack {
     // 返回的数据
     @Override
     public void onCategoriesLoaded(Categories categories) {
-
+        setUpState(State.SUCCESS);
         mHomePagerAdapter.setDataList(categories.getData());
         new TabLayoutMediator(mTableView, mPageView2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override

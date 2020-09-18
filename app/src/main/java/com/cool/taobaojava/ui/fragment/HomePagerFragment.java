@@ -6,7 +6,7 @@ import android.view.View;
 
 import com.cool.taobaojava.R;
 import com.cool.taobaojava.base.BaseFragment;
-import com.cool.taobaojava.model.Categories;
+import com.cool.taobaojava.model.domain.Categories;
 import com.cool.taobaojava.utils.Constants;
 
 public class HomePagerFragment extends BaseFragment {

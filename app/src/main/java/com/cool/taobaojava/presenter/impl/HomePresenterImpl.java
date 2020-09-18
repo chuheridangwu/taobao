@@ -1,7 +1,7 @@
 package com.cool.taobaojava.presenter.impl;
 
 import com.cool.taobaojava.model.Api;
-import com.cool.taobaojava.model.Categories;
+import com.cool.taobaojava.model.domain.Categories;
 import com.cool.taobaojava.presenter.IHomePresenter;
 import com.cool.taobaojava.utils.LogUtils;
 import com.cool.taobaojava.utils.RetrofitManager;

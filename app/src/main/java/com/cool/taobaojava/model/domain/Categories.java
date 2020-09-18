@@ -1,4 +1,4 @@
-package com.cool.taobaojava.model;
+package com.cool.taobaojava.model.domain;
 
 import java.util.List;
 

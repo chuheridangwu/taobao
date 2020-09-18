@@ -1,13 +1,9 @@
 package com.cool.taobaojava.view;
 
-import com.cool.taobaojava.model.Categories;
+import com.cool.taobaojava.base.BaseCallback;
+import com.cool.taobaojava.model.domain.Categories;
 
-public interface IHomeCallBack {
+public interface IHomeCallBack extends BaseCallback {
     void onCategoriesLoaded(Categories categories);
 
-    void onNetworkError();
-
-    void onLoading();
-
-    void onEmpty();
 }

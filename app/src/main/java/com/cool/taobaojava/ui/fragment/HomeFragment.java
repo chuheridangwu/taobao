@@ -1,21 +1,15 @@
 package com.cool.taobaojava.ui.fragment;
 
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.TableLayout;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.cool.taobaojava.R;
 import com.cool.taobaojava.base.BaseFragment;
-import com.cool.taobaojava.model.Categories;
-import com.cool.taobaojava.presenter.IHomePresenter;
+import com.cool.taobaojava.model.domain.Categories;
 import com.cool.taobaojava.presenter.impl.HomePresenterImpl;
 import com.cool.taobaojava.ui.adapter.HomePagerAdapter;
 import com.cool.taobaojava.view.IHomeCallBack;

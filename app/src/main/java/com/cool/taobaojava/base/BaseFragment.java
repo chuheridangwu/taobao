@@ -1,6 +1,7 @@
 package com.cool.taobaojava.base;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -110,7 +111,20 @@ public abstract class BaseFragment extends Fragment {
     }
 
     private View loadErrorView(LayoutInflater inflater, ViewGroup container) {
-        return inflater.inflate(R.layout.fragment_error,container,false);
+        View view = inflater.inflate(R.layout.fragment_error,container,false);
+        view.findViewById(R.id.network_click).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("TAG", "onClick:  网络错误");
+                onRetryNetWork();
+            }
+        });
+        return  view;
+    }
+
+    // 重新加载
+    public void onRetryNetWork(){
+
     }
 
     protected abstract int getRootViewResId();

@@ -1,15 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:gravity="center"
     android:orientation="vertical"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
+    <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="加载错误"
-        android:textSize="18sp"
-        android:textColor="@color/colorPrimaryDark"
-        android:gravity="center"></TextView>
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:id="@+id/network_click">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/wifi"></ImageView>
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/text_network_error_tip"
+            android:textSize="18sp"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="center"></TextView>
+
+    </LinearLayout>
+
+
 
 </LinearLayout>

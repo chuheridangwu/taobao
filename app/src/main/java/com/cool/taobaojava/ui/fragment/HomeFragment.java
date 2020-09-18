@@ -90,6 +90,13 @@ public class HomeFragment extends BaseFragment  implements IHomeCallBack {
         setUpState(State.EMPTY);
     }
 
+    @Override
+    public void onRetryNetWork() {
+        if (mHomePresenter != null){
+            mHomePresenter.getCategories();
+        }
+    }
+
     // 取消回调注册
     @Override
     protected void release() {

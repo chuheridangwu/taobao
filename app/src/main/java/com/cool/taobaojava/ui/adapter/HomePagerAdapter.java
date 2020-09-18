@@ -38,7 +38,9 @@ public class HomePagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        return new HomePagerFragment();
+        Categories.DataBean dataBean = listData.get(position);
+        HomePagerFragment fragment = new HomePagerFragment().newInstance(dataBean);
+        return fragment;
     }
 
     @Override

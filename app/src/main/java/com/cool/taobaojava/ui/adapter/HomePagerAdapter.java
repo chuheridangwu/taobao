@@ -6,46 +6,43 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.cool.taobaojava.R;
 import com.cool.taobaojava.model.Categories;
+import com.cool.taobaojava.ui.fragment.HomePagerFragment;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomePagerAdapter extends RecyclerView.Adapter<HomePagerAdapter.ViewHolder> {
+public class HomePagerAdapter extends FragmentStateAdapter {
 
-    private  List<Categories.DataBean> dataList = new ArrayList<>();
+    List<Categories.DataBean> listData = new ArrayList<>();
 
-    public void setDataList(List<Categories.DataBean> dataList) {
-        this.dataList = dataList;
+    public void setListData(List<Categories.DataBean> listData) {
+        this.listData = listData;
         notifyDataSetChanged();
+    }
+
+    public HomePagerAdapter(@NonNull Fragment fragment) {
+        super(fragment);
     }
 
     @NonNull
     @Override
-    public HomePagerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.fragment_home_pager,parent,false);
-        return new ViewHolder(view);
-    }
-
-    @Override
-    public void onBindViewHolder(@NonNull HomePagerAdapter.ViewHolder holder, int position) {
-
+    public Fragment createFragment(int position) {
+        return new HomePagerFragment();
     }
 
     @Override
     public int getItemCount() {
-        return dataList.size();
-    }
-
-    class ViewHolder extends RecyclerView.ViewHolder{
-
-        public ViewHolder(@NonNull View itemView) {
-            super(itemView);
-        }
+        return listData.size();
     }
 }

@@ -39,7 +39,7 @@ public class HomeFragment extends BaseFragment  implements IHomeCallBack {
     protected void initView(View rootView) {
         mTableView = rootView.findViewById(R.id.home_indicator);
         mPageView2 = rootView.findViewById(R.id.home_view_page2);
-        mHomePagerAdapter = new HomePagerAdapter();
+        mHomePagerAdapter = new HomePagerAdapter(this);
         mPageView2.setAdapter(mHomePagerAdapter);
     }
 
@@ -65,7 +65,9 @@ public class HomeFragment extends BaseFragment  implements IHomeCallBack {
     @Override
     public void onCategoriesLoaded(Categories categories) {
         setUpState(State.SUCCESS);
-        mHomePagerAdapter.setDataList(categories.getData());
+        if (mHomePagerAdapter != null){
+            mHomePagerAdapter.setListData(categories.getData());
+        }
         new TabLayoutMediator(mTableView, mPageView2, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
             public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {

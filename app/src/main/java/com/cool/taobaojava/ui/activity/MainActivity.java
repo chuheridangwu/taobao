@@ -19,6 +19,8 @@ import com.cool.taobaojava.ui.fragment.SelectedFragment;
 import com.cool.taobaojava.utils.LogUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import static com.cool.taobaojava.R.id.main_page_container;
+
 public class MainActivity extends AppCompatActivity {
 
     private BottomNavigationView mNavigationView;
@@ -81,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
     // 切换Fragment
     private void switchFragment(Fragment fragment) {
         FragmentTransaction transaction = mFm.beginTransaction();
-        transaction.replace(R.id.main_page_container,fragment);
+        transaction.replace(main_page_container,fragment);
         transaction.commit();
     }
 }

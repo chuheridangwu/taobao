@@ -41,7 +41,11 @@ public class HomeFragment extends BaseFragment  implements IHomeCallBack {
         mPageView2 = rootView.findViewById(R.id.home_view_page2);
         mHomePagerAdapter = new HomePagerAdapter();
         mPageView2.setAdapter(mHomePagerAdapter);
+    }
 
+    @Override
+    protected View loadRootView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.base_home_fragment_layout,container,false);
     }
 
     // 加载数据

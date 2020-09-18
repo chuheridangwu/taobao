@@ -1,6 +1,6 @@
 package com.cool.taobaojava.base;
 
-public interface BaseCallback {
+public interface IBaseCallback {
 
     void onNetworkError();
 

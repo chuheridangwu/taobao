@@ -59,12 +59,12 @@ public class HomePresenterImpl implements IHomePresenter {
     }
 
     @Override
-    public void registerCallback(IHomeCallBack callBack) {
+    public void registerViewCallback(IHomeCallBack callBack) {
         mCallBack = callBack;
     }
 
     @Override
-    public void unregisterCallback(IHomeCallBack callBack) {
+    public void unregisterViewCallback(IHomeCallBack callBack) {
         mCallBack = null;
     }
 }

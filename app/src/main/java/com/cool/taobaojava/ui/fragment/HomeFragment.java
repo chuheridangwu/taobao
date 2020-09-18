@@ -47,7 +47,6 @@ public class HomeFragment extends BaseFragment  implements IHomeCallBack {
     // 加载数据
     @Override
     protected void loadData() {
-        setUpState(State.LOADING);
         mHomePresenter.getCategories();
     }
 
@@ -70,6 +69,21 @@ public class HomeFragment extends BaseFragment  implements IHomeCallBack {
                 tab.setText(data.getTitle());
             }
         }).attach();
+    }
+
+    @Override
+    public void onNetworkError() {
+        setUpState(State.ERROR);
+    }
+
+    @Override
+    public void onLoading() {
+        setUpState(State.LOADING);
+    }
+
+    @Override
+    public void onEmpty() {
+        setUpState(State.EMPTY);
     }
 
     // 取消回调注册

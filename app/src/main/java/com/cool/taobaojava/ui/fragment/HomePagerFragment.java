@@ -8,6 +8,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.cool.taobaojava.R;
 import com.cool.taobaojava.base.BaseFragment;
@@ -16,6 +17,7 @@ import com.cool.taobaojava.model.domain.HomePagerContent;
 import com.cool.taobaojava.presenter.ICategoryPagerPresenter;
 import com.cool.taobaojava.presenter.impl.CategoryPagePresenterImpl;
 import com.cool.taobaojava.ui.adapter.HomePageContentAdapter;
+import com.cool.taobaojava.ui.adapter.LooperPagerAdapter;
 import com.cool.taobaojava.utils.Constants;
 import com.cool.taobaojava.view.ICategoryPagerCallback;
 
@@ -25,6 +27,7 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
 
     private ICategoryPagerPresenter mCategoryPagerPresenter;
     private int materialId;
+    private LooperPagerAdapter mLoopAdapter;
 
     public static HomePagerFragment newInstance(Categories.DataBean category){
         HomePagerFragment homePagerFragment = new HomePagerFragment();
@@ -42,6 +45,7 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
 
     RecyclerView mContentList;
     private HomePageContentAdapter mContentAdapter;
+    private ViewPager2 mLoopView;
     @Override
     protected void initView(View rootView) {
         mContentList = rootView.findViewById(R.id.home_page_content_list);
@@ -58,6 +62,11 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
         // 设置适配器
         mContentAdapter = new HomePageContentAdapter();
         mContentList.setAdapter(mContentAdapter);
+
+        // 设置轮播图
+        mLoopView = rootView.findViewById(R.id.loop_pager);
+        mLoopAdapter = new LooperPagerAdapter();
+        mLoopView.setAdapter(mLoopAdapter);
     }
 
     @Override
@@ -123,6 +132,7 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
     @Override
     public void onLooperListLoaded(List<HomePagerContent.DataBean> contents) {
         Log.d("TAG", "onLooperListLoaded:  " + contents.size());
+        mLoopAdapter.setData(contents);
     }
 
     @Override

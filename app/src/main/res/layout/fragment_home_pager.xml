@@ -2,7 +2,14 @@
 <LinearLayout
     android:background="@color/colorPagerBg"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    
+    <androidx.viewpager2.widget.ViewPager2
+        android:layout_width="match_parent"
+        android:layout_height="125dp"
+        android:id="@+id/loop_pager"
+        android:overScrollMode="never"></androidx.viewpager2.widget.ViewPager2>
 
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"

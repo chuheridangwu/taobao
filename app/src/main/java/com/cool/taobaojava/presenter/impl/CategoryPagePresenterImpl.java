@@ -13,7 +13,9 @@ import com.cool.taobaojava.utils.UrlUtils;
 import com.cool.taobaojava.view.ICategoryPagerCallback;
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import retrofit2.Call;
@@ -39,6 +41,11 @@ public class CategoryPagePresenterImpl implements ICategoryPagerPresenter {
 
     @Override
     public void getContentByCategoryId(int categoryId) {
+        for (ICategoryPagerCallback callback : callbacks) {
+            if (callback.getCategoryId() == categoryId){
+                callback.onLoading();
+            }
+        }
         Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
         Api api = retrofit.create(Api.class);
         Integer targetPage = pagesInfo.get(categoryId);
@@ -53,21 +60,27 @@ public class CategoryPagePresenterImpl implements ICategoryPagerPresenter {
                 if (response.code() == HttpURLConnection.HTTP_OK){
                     HomePagerContent content = response.body();
                     Log.d("TAG", "onResponse: " + content.getData());
+                    handleHomePageContentResult(content,categoryId);
                 }else{
-                    LogUtils.d(this,response.body().toString() + "返回错误");
+                    handleNetworkError(categoryId);
                 }
             }
 
             @Override
             public void onFailure(Call<HomePagerContent> call, Throwable t) {
                 Log.d("this", "返回错误");
+                handleNetworkError(categoryId);
             }
         });
     }
 
     @Override
     public void loaderMore(int categoryId) {
+        for (ICategoryPagerCallback callback : callbacks) {
+            if (callback.getCategoryId() == categoryId){
 
+            }
+        }
     }
 
     @Override
@@ -75,13 +88,38 @@ public class CategoryPagePresenterImpl implements ICategoryPagerPresenter {
 
     }
 
+    private void handleNetworkError(int categoryId) {
+        for (ICategoryPagerCallback callback : callbacks) {
+            if (callback.getCategoryId() == categoryId){
+                callback.onError();
+            }
+        }
+    }
+
+
+    private void handleHomePageContentResult(HomePagerContent content, int categoryId) {
+        for(ICategoryPagerCallback callback : callbacks){
+            if (callback.getCategoryId() == categoryId){
+                if (content == null || content.getData().size() == 0){
+                    callback.onEmpty();
+                }else {
+                    callback.onContentLoaded(content.getData());
+                }
+            }
+        }
+    }
+
+    private List<ICategoryPagerCallback> callbacks = new ArrayList<>();
     @Override
     public void registerViewCallback(ICategoryPagerCallback callBack) {
-
+        if (callbacks.contains(callBack)){
+            return;
+        }
+        callbacks.add(callBack);
     }
 
     @Override
     public void unregisterViewCallback(ICategoryPagerCallback callBack) {
-
+        callbacks.remove(callBack);
     }
 }

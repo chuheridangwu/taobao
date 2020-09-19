@@ -2,7 +2,7 @@ package com.cool.taobaojava.base;
 
 public interface IBaseCallback {
 
-    void onNetworkError();
+    void onError();
 
     void onLoading();
 

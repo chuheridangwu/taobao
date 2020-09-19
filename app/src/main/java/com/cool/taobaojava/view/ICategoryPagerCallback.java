@@ -1,24 +1,21 @@
 package com.cool.taobaojava.view;
 
+import com.cool.taobaojava.base.IBaseCallback;
 import com.cool.taobaojava.model.domain.HomePagerContent;
 
 import java.util.List;
 
-public interface ICategoryPagerCallback {
+public interface ICategoryPagerCallback extends IBaseCallback {
 
     void onContentLoaded(List<HomePagerContent.DataBean> contents);
 
-    void onLoading(int categoryId);
+    void onLoadMoreError();
 
-    void onLError(int categoryId);
-
-    void onEmpty(int categoryId);
-
-    void onLoadMoreError(int categoryId);
-
-    void onLoadMoreEmpty(int categoryId);
+    void onLoadMoreEmpty();
 
     void onLoadMoreLoaded(List<HomePagerContent.DataBean> contents);
 
     void onLooperListLoaded(List<HomePagerContent.DataBean> contents);
+
+    int getCategoryId();
 }

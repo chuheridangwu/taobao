@@ -43,7 +43,7 @@ public class HomePresenterImpl implements IHomePresenter {
 
                 }else {
                     if (mCallBack!=null) {
-                        mCallBack.onNetworkError();
+                        mCallBack.onError();
                     }
                 }
             }
@@ -52,7 +52,7 @@ public class HomePresenterImpl implements IHomePresenter {
             public void onFailure(Call<Categories> call, Throwable t) {
                 // 加载失败的结果
                 if (mCallBack!=null) {
-                    mCallBack.onNetworkError();
+                    mCallBack.onError();
                 }
             }
         });

@@ -18,6 +18,7 @@ import java.util.List;
 public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCallback {
 
     private ICategoryPagerPresenter mCategoryPagerPresenter;
+    private int materialId;
 
     public static HomePagerFragment newInstance(Categories.DataBean category){
         HomePagerFragment homePagerFragment = new HomePagerFragment();
@@ -35,7 +36,7 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
 
     @Override
     protected void initView(View rootView) {
-        setUpState(State.SUCCESS);
+
     }
 
     @Override
@@ -48,7 +49,7 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
     protected void loadData() {
         Bundle arguments = getArguments();
         String title = arguments.getString(Constants.KEY_HOME_PAGER_TITLE);
-        int materialId = arguments.getInt(Constants.KEY_HOME_PAGER_MATERIAL_ID);
+        materialId = arguments.getInt(Constants.KEY_HOME_PAGER_MATERIAL_ID);
         Log.d("TAG", "loadData: " + title + materialId);
         if (mCategoryPagerPresenter!=null) {
             mCategoryPagerPresenter.getContentByCategoryId(materialId);
@@ -64,31 +65,31 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
 
     @Override
     public void onContentLoaded(List<HomePagerContent.DataBean> contents) {
-
+        setUpState(State.SUCCESS);
     }
 
     @Override
-    public void onLoading(int categoryId) {
+    public void onLoading() {
         setUpState(State.LOADING);
     }
 
     @Override
-    public void onLError(int categoryId) {
+    public void onError(){
         setUpState(State.ERROR);
     }
 
     @Override
-    public void onEmpty(int categoryId) {
+    public void onEmpty() {
         setUpState(State.EMPTY);
     }
 
     @Override
-    public void onLoadMoreError(int categoryId) {
+    public void onLoadMoreError() {
 
     }
 
     @Override
-    public void onLoadMoreEmpty(int categoryId) {
+    public void onLoadMoreEmpty() {
 
     }
 
@@ -100,5 +101,10 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
     @Override
     public void onLooperListLoaded(List<HomePagerContent.DataBean> contents) {
 
+    }
+
+    @Override
+    public int getCategoryId() {
+        return materialId;
     }
 }

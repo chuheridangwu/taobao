@@ -122,7 +122,7 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
 
     @Override
     public void onLooperListLoaded(List<HomePagerContent.DataBean> contents) {
-
+        Log.d("TAG", "onLooperListLoaded:  " + contents.size());
     }
 
     @Override

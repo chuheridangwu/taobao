@@ -103,7 +103,10 @@ public class CategoryPagePresenterImpl implements ICategoryPagerPresenter {
                 if (content == null || content.getData().size() == 0){
                     callback.onEmpty();
                 }else {
-                    callback.onContentLoaded(content.getData());
+                    List<HomePagerContent.DataBean> data = content.getData();
+                    List<HomePagerContent.DataBean> looperData = data.subList(data.size() - 5,data.size());
+                    callback.onLooperListLoaded(looperData);
+                    callback.onContentLoaded(data);
                 }
             }
         }

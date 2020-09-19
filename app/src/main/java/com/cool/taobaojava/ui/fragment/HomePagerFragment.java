@@ -1,9 +1,11 @@
 package com.cool.taobaojava.ui.fragment;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,7 +45,17 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
     @Override
     protected void initView(View rootView) {
         mContentList = rootView.findViewById(R.id.home_page_content_list);
+        // 设置布局样式
         mContentList.setLayoutManager(new LinearLayoutManager(getContext()));
+        // 设置item上下边距
+        mContentList.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                outRect.top = 8;
+                outRect.bottom = 5;
+            }
+        });
+        // 设置适配器
         mContentAdapter = new HomePageContentAdapter();
         mContentList.setAdapter(mContentAdapter);
     }

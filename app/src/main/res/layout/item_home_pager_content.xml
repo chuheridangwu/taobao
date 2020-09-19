@@ -1,25 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     android:orientation="horizontal"
+    android:background="@android:color/white"
     android:gravity="center"
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <ImageView
         android:layout_width="80dp"
         android:layout_height="80dp"
+        android:layout_marginLeft="10dp"
         android:src="@mipmap/ic_launcher"
         android:id="@+id/goods_cover"></ImageView>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+        android:layout_margin="10dp">
         <TextView
             android:id="@+id/goods_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="羽绒棉背心女士马夹外穿韩版加厚中长款宽松秋冬网红棉马甲外套潮"
+           android:textColor="@color/colorGrey"
+            android:textStyle="bold"
             ></TextView>
 
         <TextView
@@ -37,7 +40,8 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            >
             <TextView
                 android:id="@+id/goods_price"
                 android:layout_width="wrap_content"
@@ -46,6 +50,7 @@
                 android:text="劵后价:"
                 ></TextView>
             <TextView
+                android:id="@+id/goods_result_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimaryDark"
@@ -53,6 +58,7 @@
                 android:layout_marginLeft="10dp"
                 ></TextView>
             <TextView
+                android:id="@+id/goods_final_price"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorGrey"
@@ -60,6 +66,7 @@
                 android:layout_marginLeft="10dp"
                 ></TextView>
             <TextView
+                android:id="@+id/goods_buy_count"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorGrey"

@@ -5,4 +5,8 @@
     <string name="text_red_packet">red_packet</string>
     <string name="text_search">search</string>
     <string name="text_network_error_tip">加载错误</string>
+    <string name="text_goods_off_price">省%1$d元</string>
+    <string name="text_goods_original_price">￥%1$s</string>
+    <string name="text_goods_sell_count">%1$d人已经购买</string>
+
 </resources>

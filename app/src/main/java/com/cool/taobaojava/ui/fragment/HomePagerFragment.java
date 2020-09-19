@@ -4,12 +4,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.cool.taobaojava.R;
 import com.cool.taobaojava.base.BaseFragment;
 import com.cool.taobaojava.model.domain.Categories;
 import com.cool.taobaojava.model.domain.HomePagerContent;
 import com.cool.taobaojava.presenter.ICategoryPagerPresenter;
 import com.cool.taobaojava.presenter.impl.CategoryPagePresenterImpl;
+import com.cool.taobaojava.ui.adapter.HomePageContentAdapter;
 import com.cool.taobaojava.utils.Constants;
 import com.cool.taobaojava.view.ICategoryPagerCallback;
 
@@ -34,9 +38,14 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
         return R.layout.fragment_home_pager;
     }
 
+    RecyclerView mContentList;
+    private HomePageContentAdapter mContentAdapter;
     @Override
     protected void initView(View rootView) {
-
+        mContentList = rootView.findViewById(R.id.home_page_content_list);
+        mContentList.setLayoutManager(new LinearLayoutManager(getContext()));
+        mContentAdapter = new HomePageContentAdapter();
+        mContentList.setAdapter(mContentAdapter);
     }
 
     @Override
@@ -66,6 +75,7 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
     @Override
     public void onContentLoaded(List<HomePagerContent.DataBean> contents) {
         setUpState(State.SUCCESS);
+        mContentAdapter.setData(contents);
     }
 
     @Override

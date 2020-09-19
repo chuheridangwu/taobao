@@ -4,10 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:gravity="center"
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="首页数据"></TextView>
+        android:id="@+id/home_page_content_list"></androidx.recyclerview.widget.RecyclerView>
 
 </LinearLayout>

@@ -7,4 +7,5 @@
     
     <color name="colorTabSelected">#ffffff</color>
     <color name="colorTabNormal">#aaffffff</color>
+    <color name="coltor_tmall">#D0021B</color>
 </resources>

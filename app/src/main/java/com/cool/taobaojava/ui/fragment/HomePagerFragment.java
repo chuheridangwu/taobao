@@ -7,9 +7,17 @@ import android.view.View;
 import com.cool.taobaojava.R;
 import com.cool.taobaojava.base.BaseFragment;
 import com.cool.taobaojava.model.domain.Categories;
+import com.cool.taobaojava.model.domain.HomePagerContent;
+import com.cool.taobaojava.presenter.ICategoryPagerPresenter;
+import com.cool.taobaojava.presenter.impl.CategoryPagePresenterImpl;
 import com.cool.taobaojava.utils.Constants;
+import com.cool.taobaojava.view.ICategoryPagerCallback;
 
-public class HomePagerFragment extends BaseFragment {
+import java.util.List;
+
+public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCallback {
+
+    private ICategoryPagerPresenter mCategoryPagerPresenter;
 
     public static HomePagerFragment newInstance(Categories.DataBean category){
         HomePagerFragment homePagerFragment = new HomePagerFragment();
@@ -31,10 +39,66 @@ public class HomePagerFragment extends BaseFragment {
     }
 
     @Override
+    protected void initPresenter() {
+        mCategoryPagerPresenter = CategoryPagePresenterImpl.getsInstance();
+        mCategoryPagerPresenter.registerViewCallback(this);
+    }
+
+    @Override
     protected void loadData() {
         Bundle arguments = getArguments();
         String title = arguments.getString(Constants.KEY_HOME_PAGER_TITLE);
         int materialId = arguments.getInt(Constants.KEY_HOME_PAGER_MATERIAL_ID);
         Log.d("TAG", "loadData: " + title + materialId);
+        if (mCategoryPagerPresenter!=null) {
+            mCategoryPagerPresenter.getContentByCategoryId(materialId);
+        }
+    }
+
+    @Override
+    protected void release() {
+        if (mCategoryPagerPresenter!=null) {
+            mCategoryPagerPresenter.unregisterViewCallback(this);
+        }
+    }
+
+    @Override
+    public void onContentLoaded(List<HomePagerContent.DataBean> contents) {
+
+    }
+
+    @Override
+    public void onLoading(int categoryId) {
+        setUpState(State.LOADING);
+    }
+
+    @Override
+    public void onLError(int categoryId) {
+        setUpState(State.ERROR);
+    }
+
+    @Override
+    public void onEmpty(int categoryId) {
+        setUpState(State.EMPTY);
+    }
+
+    @Override
+    public void onLoadMoreError(int categoryId) {
+
+    }
+
+    @Override
+    public void onLoadMoreEmpty(int categoryId) {
+
+    }
+
+    @Override
+    public void onLoadMoreLoaded(List<HomePagerContent.DataBean> contents) {
+
+    }
+
+    @Override
+    public void onLooperListLoaded(List<HomePagerContent.DataBean> contents) {
+
     }
 }

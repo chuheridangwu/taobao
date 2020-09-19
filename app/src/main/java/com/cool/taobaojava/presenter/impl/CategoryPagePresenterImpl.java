@@ -1,13 +1,68 @@
 package com.cool.taobaojava.presenter.impl;
 
+import android.content.Intent;
+import android.util.Log;
+
+import com.cool.taobaojava.model.Api;
+import com.cool.taobaojava.model.domain.Categories;
+import com.cool.taobaojava.model.domain.HomePagerContent;
 import com.cool.taobaojava.presenter.ICategoryPagerPresenter;
+import com.cool.taobaojava.utils.LogUtils;
+import com.cool.taobaojava.utils.RetrofitManager;
+import com.cool.taobaojava.utils.UrlUtils;
 import com.cool.taobaojava.view.ICategoryPagerCallback;
 
-class CategoryPagePresenterImpl implements ICategoryPagerPresenter {
+import java.net.HttpURLConnection;
+import java.util.HashMap;
+import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+import retrofit2.Retrofit;
+
+public class CategoryPagePresenterImpl implements ICategoryPagerPresenter {
+
+    private Map<Integer,Integer> pagesInfo = new HashMap<>();
+    public static final int DEFAULT_PAGE = 1;
+
+    private CategoryPagePresenterImpl(){}
+
+    private static ICategoryPagerPresenter sInstance = null;
+
+    public  static ICategoryPagerPresenter getsInstance(){
+        if (sInstance == null){
+            sInstance = new CategoryPagePresenterImpl();
+        }
+        return sInstance;
+    }
 
     @Override
     public void getContentByCategoryId(int categoryId) {
+        Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
+        Api api = retrofit.create(Api.class);
+        Integer targetPage = pagesInfo.get(categoryId);
+        if (targetPage == null){
+            targetPage = DEFAULT_PAGE;
+            pagesInfo.put(categoryId,DEFAULT_PAGE);
+        }
+        Call<HomePagerContent> task = api.getHomePageContent(UrlUtils.createHomePagerUrl(categoryId,DEFAULT_PAGE));
+        task.enqueue(new Callback<HomePagerContent>() {
+            @Override
+            public void onResponse(Call<HomePagerContent> call, Response<HomePagerContent> response) {
+                if (response.code() == HttpURLConnection.HTTP_OK){
+                    HomePagerContent content = response.body();
+                    Log.d("TAG", "onResponse: " + content.getData());
+                }else{
+                    LogUtils.d(this,response.body().toString() + "返回错误");
+                }
+            }
 
+            @Override
+            public void onFailure(Call<HomePagerContent> call, Throwable t) {
+                Log.d("this", "返回错误");
+            }
+        });
     }
 
     @Override

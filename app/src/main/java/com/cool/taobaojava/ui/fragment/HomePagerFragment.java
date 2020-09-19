@@ -4,6 +4,7 @@ import android.graphics.Rect;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -46,6 +47,7 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
     RecyclerView mContentList;
     private HomePageContentAdapter mContentAdapter;
     private ViewPager2 mLoopView;
+    private TextView mCategoryTitleTv;
     @Override
     protected void initView(View rootView) {
         mContentList = rootView.findViewById(R.id.home_page_content_list);
@@ -67,6 +69,9 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
         mLoopView = rootView.findViewById(R.id.loop_pager);
         mLoopAdapter = new LooperPagerAdapter();
         mLoopView.setAdapter(mLoopAdapter);
+
+        // 分类标题
+        mCategoryTitleTv = rootView.findViewById(R.id.home_pager_title);
     }
 
     @Override
@@ -84,6 +89,7 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
         if (mCategoryPagerPresenter!=null) {
             mCategoryPagerPresenter.getContentByCategoryId(materialId);
         }
+        mCategoryTitleTv.setText(title);
     }
 
     @Override

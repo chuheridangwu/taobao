@@ -11,6 +11,8 @@
         android:id="@+id/loop_pager"
         android:overScrollMode="never"></androidx.viewpager2.widget.ViewPager2>
 
+    <include layout="@layout/include_home_pager_title"></include>
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="match_parent"

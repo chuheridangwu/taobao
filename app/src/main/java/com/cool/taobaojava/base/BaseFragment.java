@@ -36,6 +36,7 @@ public abstract class BaseFragment extends Fragment {
         loadStatesView(inflater,container);
 
         initView(rootView);
+        initListener();
         initPresenter();
         loadData();
         return rootView;
@@ -82,6 +83,11 @@ public abstract class BaseFragment extends Fragment {
 
     // 初始化view
     protected void initView(View rootView){
+
+    }
+
+    // 设置监听
+    protected  void initListener(){
 
     }
 

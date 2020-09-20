@@ -2,7 +2,6 @@ package com.cool.taobaojava.ui.fragment;
 
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -11,7 +10,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -90,6 +88,40 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
     }
 
     @Override
+    protected void initListener() {
+      mLoopView.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
+          @Override
+          public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+              super.onPageScrolled(position, positionOffset, positionOffsetPixels);
+          }
+
+          @Override
+          public void onPageSelected(int position) {
+              super.onPageSelected(position);
+              // 切换指示器
+              int targetPosition = position % mLoopAdapter.getDataSize();
+              updateLooperIndicator(targetPosition);
+          }
+
+          @Override
+          public void onPageScrollStateChanged(int state) {
+              super.onPageScrollStateChanged(state);
+          }
+      });
+    }
+
+    private void updateLooperIndicator(int position) {
+        for (int i = 0; i < mLoopView.getChildCount(); i++){
+            View view = mLoopView.getChildAt(i);
+            if (i == position){
+                view.setBackgroundResource(R.drawable.shape_indicator_point_selected);
+            }else {
+                view.setBackgroundResource(R.drawable.shape_indicator_point_normal);
+            }
+        }
+    }
+
+    @Override
     protected void loadData() {
         Bundle arguments = getArguments();
         String title = arguments.getString(Constants.KEY_HOME_PAGER_TITLE);
@@ -156,11 +188,6 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
         mLoopView.setCurrentItem(targetCenterPosition);
         Log.d("TAG", "onLooperListLoaded: " + targetCenterPosition + "url" + contents.get(0).getPict_url());
 
-        // 设置背景
-        GradientDrawable selectedDrawable = (GradientDrawable)getContext().getDrawable(R.drawable.shape_indicator_point);
-        GradientDrawable normalDrawable = (GradientDrawable)getContext().getDrawable(R.drawable.shape_indicator_point);
-        normalDrawable.setColor(getContext().getColor(R.color.white));
-
         for (int i = 0; i < contents.size(); i++){
             View view = new View(getContext());
             int size = SizeUtils.dip2px(getContext(),8);
@@ -169,9 +196,9 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
             layoutParams.rightMargin = SizeUtils.dip2px(getContext(),5);
             view.setLayoutParams(layoutParams);
             if (i == 0){
-                view.setBackground(selectedDrawable);
+                view.setBackgroundResource(R.drawable.shape_indicator_point_selected);
             }else {
-                view.setBackground(normalDrawable);
+                view.setBackgroundResource(R.drawable.shape_indicator_point_normal);
             }
             looperPointContainer.addView(view);
         }

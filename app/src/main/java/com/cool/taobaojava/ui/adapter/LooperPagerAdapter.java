@@ -19,6 +19,10 @@ public class LooperPagerAdapter extends RecyclerView.Adapter<LooperPagerAdapter.
 
     List<HomePagerContent.DataBean> dataList = new ArrayList<>();
 
+    public int getDataSize(){
+        return dataList.size();
+    }
+
     @NonNull
     @Override
     public InnerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

@@ -25,6 +25,7 @@ import com.cool.taobaojava.presenter.ICategoryPagerPresenter;
 import com.cool.taobaojava.presenter.impl.CategoryPagePresenterImpl;
 import com.cool.taobaojava.ui.adapter.HomePageContentAdapter;
 import com.cool.taobaojava.ui.adapter.LooperPagerAdapter;
+import com.cool.taobaojava.ui.custom.TbNestedScrollView;
 import com.cool.taobaojava.utils.Constants;
 import com.cool.taobaojava.utils.SizeUtils;
 import com.cool.taobaojava.utils.ToastUtils;
@@ -42,6 +43,8 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
     private ViewGroup looperPointContainer;
     private TwinklingRefreshLayout twinklingRefreshLayout;
     private LinearLayout mHomePagerParent;
+    private TbNestedScrollView mHomePagerNestedView;
+    private LinearLayout mHomeHeaderContainer;
 
     public static HomePagerFragment newInstance(Categories.DataBean category){
         HomePagerFragment homePagerFragment = new HomePagerFragment();
@@ -93,6 +96,12 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
 
         // 整体布局
         mHomePagerParent = rootView.findViewById(R.id.home_pager_parent);
+
+        // 获取滑动的NestedView
+        mHomePagerNestedView = rootView.findViewById(R.id.home_pager_nested_scroller);
+
+        // 获取轮播图 + 标题的viewGroup
+        mHomeHeaderContainer = rootView.findViewById(R.id.home_pager_header_container);
     }
 
     @Override
@@ -110,12 +119,18 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
         mHomePagerParent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-              int measureHeight = mHomePagerParent.getMeasuredHeight();
-              LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mContentList.getLayoutParams();
-              layoutParams.height = measureHeight;
-              mContentList.setLayoutParams(layoutParams);
-              if (measureHeight != 0){
-                  mHomePagerParent.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                // 获取头部的高度
+                int headerHeight = mHomeHeaderContainer.getMeasuredHeight();
+                mHomePagerNestedView.setHeaderHeight(headerHeight);
+
+                // 获取RecyclerView的高度
+                int measureHeight = mHomePagerParent.getMeasuredHeight();
+                LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mContentList.getLayoutParams();
+                layoutParams.height = measureHeight;
+                mContentList.setLayoutParams(layoutParams);
+
+                if (measureHeight != 0){
+                    mHomePagerParent.getViewTreeObserver().removeOnGlobalLayoutListener(this);
                 }
             }
         });

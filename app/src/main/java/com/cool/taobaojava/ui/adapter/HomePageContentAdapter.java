@@ -22,7 +22,7 @@ import java.util.List;
 
 public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContentAdapter.InnerHolder> {
 
-    List<HomePagerContent.DataBean> data = new ArrayList<>();
+    List<HomePagerContent.DataBean> mData = new ArrayList<>();
 
     @NonNull
     @Override
@@ -33,19 +33,25 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
 
     @Override
     public void onBindViewHolder(@NonNull HomePageContentAdapter.InnerHolder holder, int position) {
-        HomePagerContent.DataBean dataBean = data.get(position);
+        HomePagerContent.DataBean dataBean = mData.get(position);
         holder.setData(dataBean);
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return mData.size();
     }
 
     public void setData(List<HomePagerContent.DataBean> contents) {
-        data.clear();
-        data.addAll(contents);
+        mData.clear();
+        mData.addAll(contents);
         notifyDataSetChanged();
+    }
+
+    public void addData(List<HomePagerContent.DataBean> contents) {
+        int olderSize = mData.size();
+        mData.addAll(contents);
+        notifyItemRangeChanged(olderSize,mData.size());
     }
 
     public class InnerHolder extends RecyclerView.ViewHolder{

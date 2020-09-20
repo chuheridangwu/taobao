@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -125,7 +126,9 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
       twinklingRefreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
           @Override
           public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
-
+              if (mCategoryPagerPresenter!=null) {
+                  mCategoryPagerPresenter.loaderMore(materialId);
+              }
           }
       });
     }
@@ -193,7 +196,11 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
 
     @Override
     public void onLoadMoreLoaded(List<HomePagerContent.DataBean> contents) {
-
+        mContentAdapter.addData(contents);
+        if (twinklingRefreshLayout!=null) {
+            twinklingRefreshLayout.finishLoadmore();
+        }
+        Toast.makeText(getContext(),"加载了" + contents.size() + "条数据",Toast.LENGTH_SHORT).show();
     }
 
     @Override

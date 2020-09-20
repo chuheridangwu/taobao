@@ -27,6 +27,7 @@ public class CategoryPagePresenterImpl implements ICategoryPagerPresenter {
 
     private Map<Integer,Integer> pagesInfo = new HashMap<>();
     public static final int DEFAULT_PAGE = 1;
+    private Integer mCurrentPage;
 
     private CategoryPagePresenterImpl(){}
 
@@ -46,14 +47,13 @@ public class CategoryPagePresenterImpl implements ICategoryPagerPresenter {
                 callback.onLoading();
             }
         }
-        Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
-        Api api = retrofit.create(Api.class);
+
         Integer targetPage = pagesInfo.get(categoryId);
         if (targetPage == null){
             targetPage = DEFAULT_PAGE;
             pagesInfo.put(categoryId,DEFAULT_PAGE);
         }
-        Call<HomePagerContent> task = api.getHomePageContent(UrlUtils.createHomePagerUrl(categoryId,DEFAULT_PAGE));
+        Call<HomePagerContent> task = createTask(categoryId, targetPage);
         task.enqueue(new Callback<HomePagerContent>() {
             @Override
             public void onResponse(Call<HomePagerContent> call, Response<HomePagerContent> response) {
@@ -74,11 +74,56 @@ public class CategoryPagePresenterImpl implements ICategoryPagerPresenter {
         });
     }
 
+    private Call<HomePagerContent> createTask(int categoryId, Integer targetPage) {
+        Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
+        Api api = retrofit.create(Api.class);
+        String url = UrlUtils.createHomePagerUrl(categoryId,targetPage);
+        return api.getHomePageContent(url);
+    }
+
     @Override
     public void loaderMore(int categoryId) {
-        for (ICategoryPagerCallback callback : callbacks) {
-            if (callback.getCategoryId() == categoryId){
+        mCurrentPage = pagesInfo.get(categoryId);
+        if (mCurrentPage == null){
+            mCurrentPage = 1;
+        }
+        mCurrentPage++;
+        Call<HomePagerContent> task = createTask(categoryId, mCurrentPage);
+        task.enqueue(new Callback<HomePagerContent>() {
+            @Override
+            public void onResponse(Call<HomePagerContent> call, Response<HomePagerContent> response) {
+                int code = response.code();
+                if (code == HttpURLConnection.HTTP_OK){
+                    HomePagerContent result = response.body();
+                    handleLoaderResult(result,categoryId);
+                }else {
+                    handleNetworkError(categoryId);
+                }
+            }
 
+            @Override
+            public void onFailure(Call<HomePagerContent> call, Throwable t) {
+                handleLoaderMoreError(categoryId);
+            }
+        });
+    }
+
+    private void handleLoaderResult(HomePagerContent result, int categoryId) {
+        for (ICategoryPagerCallback callback : callbacks) {
+            if (result == null || result.getData().size() == 0){
+                callback.onLoadMoreEmpty();
+            }else {
+                callback.onLoadMoreLoaded(result.getData());
+            }
+        }
+    }
+
+    private void handleLoaderMoreError(int categoryId) {
+        mCurrentPage--;
+        pagesInfo.put(mCurrentPage,categoryId);
+        for (ICategoryPagerCallback callback : callbacks) {
+            if (callback.getCategoryId() == categoryId) {
+                callback.onLoadMoreError();
             }
         }
     }

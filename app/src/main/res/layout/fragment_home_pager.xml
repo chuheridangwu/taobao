@@ -4,12 +4,28 @@
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-    
-    <androidx.viewpager2.widget.ViewPager2
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="125dp"
-        android:id="@+id/loop_pager"
-        android:overScrollMode="never"></androidx.viewpager2.widget.ViewPager2>
+        android:layout_height="125dp">
+        <androidx.viewpager2.widget.ViewPager2
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/loop_pager"
+            android:overScrollMode="never"></androidx.viewpager2.widget.ViewPager2>
+
+        <LinearLayout
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="10dp"
+            android:id="@+id/looper_point_container"
+            android:orientation="horizontal"></LinearLayout>
+
+    </RelativeLayout>
+    
+
 
     <include layout="@layout/include_home_pager_title"></include>
 

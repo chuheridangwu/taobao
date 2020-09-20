@@ -1,12 +1,17 @@
 package com.cool.taobaojava.ui.fragment;
 
 import android.graphics.Rect;
+import android.graphics.drawable.GradientDrawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -20,6 +25,7 @@ import com.cool.taobaojava.presenter.impl.CategoryPagePresenterImpl;
 import com.cool.taobaojava.ui.adapter.HomePageContentAdapter;
 import com.cool.taobaojava.ui.adapter.LooperPagerAdapter;
 import com.cool.taobaojava.utils.Constants;
+import com.cool.taobaojava.utils.SizeUtils;
 import com.cool.taobaojava.view.ICategoryPagerCallback;
 
 import java.util.List;
@@ -29,6 +35,7 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
     private ICategoryPagerPresenter mCategoryPagerPresenter;
     private int materialId;
     private LooperPagerAdapter mLoopAdapter;
+    private ViewGroup looperPointContainer;
 
     public static HomePagerFragment newInstance(Categories.DataBean category){
         HomePagerFragment homePagerFragment = new HomePagerFragment();
@@ -72,6 +79,8 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
 
         // 分类标题
         mCategoryTitleTv = rootView.findViewById(R.id.home_pager_title);
+        // 轮播图指示器
+        looperPointContainer = rootView.findViewById(R.id.looper_point_container);
     }
 
     @Override
@@ -139,6 +148,25 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
     public void onLooperListLoaded(List<HomePagerContent.DataBean> contents) {
         Log.d("TAG", "onLooperListLoaded:  " + contents.size());
         mLoopAdapter.setData(contents);
+        looperPointContainer.removeAllViews();
+        GradientDrawable selectedDrawable = (GradientDrawable)getContext().getDrawable(R.drawable.shape_indicator_point);
+        GradientDrawable normalDrawable = (GradientDrawable)getContext().getDrawable(R.drawable.shape_indicator_point);
+        normalDrawable.setColor(getContext().getColor(R.color.white));
+
+        for (int i = 0; i < contents.size(); i++){
+            View view = new View(getContext());
+            int size = SizeUtils.dip2px(getContext(),8);
+            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(size,size);
+            layoutParams.leftMargin = SizeUtils.dip2px(getContext(),5);
+            layoutParams.rightMargin = SizeUtils.dip2px(getContext(),5);
+            view.setLayoutParams(layoutParams);
+            if (i == 0){
+                view.setBackground(selectedDrawable);
+            }else {
+                view.setBackground(normalDrawable);
+            }
+            looperPointContainer.addView(view);
+        }
     }
 
     @Override

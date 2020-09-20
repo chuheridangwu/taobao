@@ -1,6 +1,8 @@
 package com.cool.taobaojava.ui.adapter;
 
 import android.media.Image;
+import android.util.Log;
+import android.util.Size;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -26,6 +28,8 @@ public class LooperPagerAdapter extends RecyclerView.Adapter<LooperPagerAdapter.
     @NonNull
     @Override
     public InnerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Log.d("TAG", "onBindViewHolder: " + parent.getMeasuredHeight());
+
         ImageView iv = new ImageView(parent.getContext());
         // 设置宽高
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT);
@@ -40,7 +44,7 @@ public class LooperPagerAdapter extends RecyclerView.Adapter<LooperPagerAdapter.
         int realPosition = position % dataList.size();
         HomePagerContent.DataBean data = dataList.get(realPosition);
         ImageView iv = (ImageView)holder.itemView;
-        Glide.with(iv).load(UrlUtils.getCoverPath(data.getPict_url())).into(iv);
+        Glide.with(iv).load(UrlUtils.getCoverPath(data.getPict_url(),180)).into(iv);
     }
 
     @Override

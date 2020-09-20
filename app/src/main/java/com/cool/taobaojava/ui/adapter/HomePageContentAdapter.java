@@ -76,7 +76,15 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
 
         public void setData(HomePagerContent.DataBean dataBean) {
             Log.d("TAG", "setData: " + dataBean.getPict_url());
-            Glide.with(good_img).load(UrlUtils.getCoverPath(dataBean.getPict_url())).into(good_img);
+
+            // 动态计算size去请求图片
+            ViewGroup.LayoutParams layoutParams = good_img.getLayoutParams();
+            int width = layoutParams.width;
+            int height = layoutParams.height;
+            int goodsImgSize = (width > height ? width : height) / 2;
+
+
+            Glide.with(good_img).load(UrlUtils.getCoverPath(dataBean.getPict_url(),goodsImgSize)).into(good_img);
             good_title.setText(dataBean.getShop_title());
             good_off_price.setText(String.format(itemView.getContext().getString(R.string.text_goods_off_price),dataBean.getCoupon_amount()));
             String finalPrice = dataBean.getZk_final_price();

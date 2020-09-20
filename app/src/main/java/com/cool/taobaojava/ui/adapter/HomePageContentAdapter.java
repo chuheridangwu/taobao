@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.cool.taobaojava.R;
 import com.cool.taobaojava.model.domain.HomePagerContent;
+import com.cool.taobaojava.utils.LogUtils;
 import com.cool.taobaojava.utils.UrlUtils;
 import com.lcodecore.tkrefreshlayout.utils.LogUtil;
 
@@ -27,12 +28,15 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
     @NonNull
     @Override
     public HomePageContentAdapter.InnerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        LogUtils.d(this,"onCreateViewHolder");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_pager_content,parent,false);
         return  new InnerHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull HomePageContentAdapter.InnerHolder holder, int position) {
+        LogUtils.d(this,"onBindViewHolder ----" + position);
+
         HomePagerContent.DataBean dataBean = mData.get(position);
         holder.setData(dataBean);
     }

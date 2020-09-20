@@ -7,6 +7,7 @@ import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +41,7 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
     private LooperPagerAdapter mLoopAdapter;
     private ViewGroup looperPointContainer;
     private TwinklingRefreshLayout twinklingRefreshLayout;
+    private LinearLayout mHomePagerParent;
 
     public static HomePagerFragment newInstance(Categories.DataBean category){
         HomePagerFragment homePagerFragment = new HomePagerFragment();
@@ -88,6 +90,9 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
 
         // 设置刷新
         twinklingRefreshLayout = rootView.findViewById(R.id.home_pager_refresh);
+
+        // 整体布局
+        mHomePagerParent = rootView.findViewById(R.id.home_pager_parent);
     }
 
     @Override
@@ -101,6 +106,21 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
 
     @Override
     protected void initListener() {
+        // 父类布局，动态设置 RecyclerView 高度
+        mHomePagerParent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+              int measureHeight = mHomePagerParent.getMeasuredHeight();
+              LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) mContentList.getLayoutParams();
+              layoutParams.height = measureHeight;
+              mContentList.setLayoutParams(layoutParams);
+              if (measureHeight != 0){
+                  mHomePagerParent.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+                }
+            }
+        });
+
+        // 轮播图
       mLoopView.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
           @Override
           public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -124,6 +144,7 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
           }
       });
 
+      // 上拉加载更多
       twinklingRefreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
           @Override
           public void onLoadMore(TwinklingRefreshLayout refreshLayout) {

@@ -59,7 +59,6 @@ public class CategoryPagePresenterImpl implements ICategoryPagerPresenter {
             public void onResponse(Call<HomePagerContent> call, Response<HomePagerContent> response) {
                 if (response.code() == HttpURLConnection.HTTP_OK){
                     HomePagerContent content = response.body();
-                    Log.d("TAG", "onResponse: " + content.getData());
                     handleHomePageContentResult(content,categoryId);
                 }else{
                     handleNetworkError(categoryId);

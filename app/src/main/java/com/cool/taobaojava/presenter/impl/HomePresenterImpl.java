@@ -37,7 +37,6 @@ public class HomePresenterImpl implements IHomePresenter {
                             mCallBack.onEmpty();
                             return;
                         }
-                        LogUtils.e(this,"加载数据成功" + categories.toString());
                         mCallBack.onCategoriesLoaded(categories);
                     }
 

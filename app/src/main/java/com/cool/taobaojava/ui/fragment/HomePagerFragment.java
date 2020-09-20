@@ -26,6 +26,7 @@ import com.cool.taobaojava.ui.adapter.HomePageContentAdapter;
 import com.cool.taobaojava.ui.adapter.LooperPagerAdapter;
 import com.cool.taobaojava.utils.Constants;
 import com.cool.taobaojava.utils.SizeUtils;
+import com.cool.taobaojava.utils.ToastUtils;
 import com.cool.taobaojava.view.ICategoryPagerCallback;
 import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
 import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
@@ -186,12 +187,18 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
 
     @Override
     public void onLoadMoreError() {
-
+        if (twinklingRefreshLayout!=null) {
+            twinklingRefreshLayout.finishLoadmore();
+        }
+        ToastUtils.showToast("加载网络失败了");
     }
 
     @Override
     public void onLoadMoreEmpty() {
-
+        if (twinklingRefreshLayout!=null) {
+            twinklingRefreshLayout.finishLoadmore();
+        }
+        ToastUtils.showToast("没有更多数据了");
     }
 
     @Override
@@ -200,7 +207,7 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
         if (twinklingRefreshLayout!=null) {
             twinklingRefreshLayout.finishLoadmore();
         }
-        Toast.makeText(getContext(),"加载了" + contents.size() + "条数据",Toast.LENGTH_SHORT).show();
+        ToastUtils.showToast("加载了" + contents.size() + "条数据");
     }
 
     @Override

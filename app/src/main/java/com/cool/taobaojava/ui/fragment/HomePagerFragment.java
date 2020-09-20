@@ -98,6 +98,9 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
           @Override
           public void onPageSelected(int position) {
               super.onPageSelected(position);
+              if (mLoopAdapter.getDataSize()==0) {
+                  return;
+              }
               // 切换指示器
               int targetPosition = position % mLoopAdapter.getDataSize();
               updateLooperIndicator(targetPosition);

@@ -3,6 +3,7 @@ package com.cool.taobaojava.ui.fragment;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.provider.DocumentsContract;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,8 @@ import com.cool.taobaojava.ui.adapter.LooperPagerAdapter;
 import com.cool.taobaojava.utils.Constants;
 import com.cool.taobaojava.utils.SizeUtils;
 import com.cool.taobaojava.view.ICategoryPagerCallback;
+import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
+import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
 
 import java.util.List;
 
@@ -34,6 +37,7 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
     private int materialId;
     private LooperPagerAdapter mLoopAdapter;
     private ViewGroup looperPointContainer;
+    private TwinklingRefreshLayout twinklingRefreshLayout;
 
     public static HomePagerFragment newInstance(Categories.DataBean category){
         HomePagerFragment homePagerFragment = new HomePagerFragment();
@@ -79,12 +83,18 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
         mCategoryTitleTv = rootView.findViewById(R.id.home_pager_title);
         // 轮播图指示器
         looperPointContainer = rootView.findViewById(R.id.looper_point_container);
+
+        // 设置刷新
+        twinklingRefreshLayout = rootView.findViewById(R.id.home_pager_refresh);
     }
 
     @Override
     protected void initPresenter() {
         mCategoryPagerPresenter = CategoryPagePresenterImpl.getsInstance();
         mCategoryPagerPresenter.registerViewCallback(this);
+
+        twinklingRefreshLayout.setEnableRefresh(false);
+        twinklingRefreshLayout.setEnableLoadmore(true);
     }
 
     @Override
@@ -109,6 +119,13 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
           @Override
           public void onPageScrollStateChanged(int state) {
               super.onPageScrollStateChanged(state);
+          }
+      });
+
+      twinklingRefreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
+          @Override
+          public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
+
           }
       });
     }

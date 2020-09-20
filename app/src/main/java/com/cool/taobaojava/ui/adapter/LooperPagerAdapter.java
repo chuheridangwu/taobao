@@ -33,14 +33,15 @@ public class LooperPagerAdapter extends RecyclerView.Adapter<LooperPagerAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull InnerHolder holder, int position) {
-        HomePagerContent.DataBean data = dataList.get(position);
+        int realPosition = position % dataList.size();
+        HomePagerContent.DataBean data = dataList.get(realPosition);
         ImageView iv = (ImageView)holder.itemView;
         Glide.with(iv).load(UrlUtils.getCoverPath(data.getPict_url())).into(iv);
     }
 
     @Override
     public int getItemCount() {
-        return dataList.size();
+        return Integer.MAX_VALUE;
     }
 
     public void setData(List<HomePagerContent.DataBean> contents) {

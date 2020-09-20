@@ -149,6 +149,14 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
         Log.d("TAG", "onLooperListLoaded:  " + contents.size());
         mLoopAdapter.setData(contents);
         looperPointContainer.removeAllViews();
+
+        // 设置初始值
+        int dx = (Integer.MAX_VALUE / 2) % contents.size();
+        int targetCenterPosition = (Integer.MAX_VALUE / 2) - dx;
+        mLoopView.setCurrentItem(targetCenterPosition);
+        Log.d("TAG", "onLooperListLoaded: " + targetCenterPosition + "url" + contents.get(0).getPict_url());
+
+        // 设置背景
         GradientDrawable selectedDrawable = (GradientDrawable)getContext().getDrawable(R.drawable.shape_indicator_point);
         GradientDrawable normalDrawable = (GradientDrawable)getContext().getDrawable(R.drawable.shape_indicator_point);
         normalDrawable.setColor(getContext().getColor(R.color.white));

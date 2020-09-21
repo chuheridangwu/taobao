@@ -16,8 +16,24 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 
 public class TicketPresenterImpl implements ITicketPresenter {
+
+    private ITicketPagerCallback mViewCallBack;
+    private String mCover;
+
+    enum LoadState{
+        LOADING,SUCCESS,ERROR,NONE
+    }
+
+    private LoadState currentState = LoadState.NONE;
+    private TicketResult mTicketResult;
+
+
     @Override
     public void getTicket(String title, String url, String cover) {
+        currentState = LoadState.LOADING;
+        onTicketLoading();
+
+        mCover = cover;
 
         String targetUrl = UrlUtils.getTicketUrl(url);
 
@@ -26,31 +42,65 @@ public class TicketPresenterImpl implements ITicketPresenter {
         TicketParams params = new TicketParams(targetUrl,title);
         Call<TicketResult> task = api.getTicket(params);
         task.enqueue(new Callback<TicketResult>() {
+
             @Override
             public void onResponse(Call<TicketResult> call, Response<TicketResult> response) {
                 int code = response.code();
                 if (code == HttpURLConnection.HTTP_OK){
-                    TicketResult result = response.body();
-
+                    mTicketResult = response.body();
+                    onTicketLoadedSuccess();
                 }else {
-
+                    onLoadedTicketError();
                 }
             }
 
             @Override
             public void onFailure(Call<TicketResult> call, Throwable t) {
-
+                onLoadedTicketError();
             }
         });
     }
 
+    private void onLoadedTicketError() {
+        if (mViewCallBack!=null) {
+            mViewCallBack.onError();
+        }else {
+            currentState = LoadState.ERROR;
+        }
+    }
+
+    private void onTicketLoadedSuccess(){
+        if (mViewCallBack!=null) {
+            mViewCallBack.onTicketLoaded(mCover,mTicketResult);
+        }else {
+            currentState = LoadState.SUCCESS;
+        }
+    }
+
     @Override
     public void registerViewCallback(ITicketPagerCallback callBack) {
+        mViewCallBack = callBack;
+        if (currentState != LoadState.NONE){
+           if (currentState == LoadState.SUCCESS){
+               onTicketLoadedSuccess();
+           }
+            if (currentState == LoadState.ERROR){
+                onLoadedTicketError();
+            }
+            if (currentState == LoadState.SUCCESS){
+                onTicketLoading();
+            }
+       }
+    }
 
+    private void onTicketLoading() {
+        if (mViewCallBack!=null) {
+            mViewCallBack.onLoading();
+        }
     }
 
     @Override
     public void unregisterViewCallback(ITicketPagerCallback callBack) {
-
+        mViewCallBack = null;
     }
 }

@@ -14,6 +14,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         initView();
 
         initEvent();
+
+        initPresenter();
+    }
+
+    protected void initPresenter() {
     }
 
     protected  void initView(){
@@ -25,4 +30,15 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public abstract int getLayoutResId();
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        this.release();
+    }
+
+    // 让子类释放资源
+    protected void release(){
+
+    };
 }

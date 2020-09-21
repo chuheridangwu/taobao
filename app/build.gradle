@@ -60,6 +60,7 @@ dependencies {
     implementation "com.github.tamsiree.RxTool:RxFeature:v2.4.1"
     implementation 'com.google.zxing:android-core:3.3.0'
     implementation 'com.google.zxing:core:3.3.2'
-    implementation project(':refreshlibrary')
-
+    // 刷新库
+    implementation  'com.scwang.smart:refresh-layout-kernel:2.0.1'      //核心必须依赖
+    implementation  'com.scwang.smart:refresh-header-classics:2.0.1'    //经典刷新头
 }

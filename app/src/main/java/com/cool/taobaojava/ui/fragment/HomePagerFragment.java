@@ -30,8 +30,11 @@ import com.cool.taobaojava.utils.Constants;
 import com.cool.taobaojava.utils.SizeUtils;
 import com.cool.taobaojava.utils.ToastUtils;
 import com.cool.taobaojava.view.ICategoryPagerCallback;
-import com.lcodecore.tkrefreshlayout.RefreshListenerAdapter;
-import com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout;
+import com.scwang.smart.refresh.footer.ClassicsFooter;
+import com.scwang.smart.refresh.header.ClassicsHeader;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 
 import java.util.List;
 
@@ -41,7 +44,7 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
     private int materialId;
     private LooperPagerAdapter mLoopAdapter;
     private ViewGroup looperPointContainer;
-    private TwinklingRefreshLayout twinklingRefreshLayout;
+    private SmartRefreshLayout mSmartRefreshLayout;
     private LinearLayout mHomePagerParent;
     private TbNestedScrollView mHomePagerNestedView;
     private LinearLayout mHomeHeaderContainer;
@@ -92,7 +95,7 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
         looperPointContainer = rootView.findViewById(R.id.looper_point_container);
 
         // 设置刷新
-        twinklingRefreshLayout = rootView.findViewById(R.id.home_pager_refresh);
+        mSmartRefreshLayout = rootView.findViewById(R.id.home_pager_refresh);
 
         // 整体布局
         mHomePagerParent = rootView.findViewById(R.id.home_pager_parent);
@@ -109,8 +112,9 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
         mCategoryPagerPresenter = CategoryPagePresenterImpl.getsInstance();
         mCategoryPagerPresenter.registerViewCallback(this);
 
-        twinklingRefreshLayout.setEnableRefresh(false);
-        twinklingRefreshLayout.setEnableLoadmore(true);
+        // 设置刷新
+        mSmartRefreshLayout.setRefreshHeader(new ClassicsHeader(getContext()));
+        mSmartRefreshLayout.setRefreshFooter(new ClassicsFooter(getContext()));
     }
 
     @Override
@@ -160,9 +164,9 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
       });
 
       // 上拉加载更多
-      twinklingRefreshLayout.setOnRefreshListener(new RefreshListenerAdapter() {
+      mSmartRefreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
           @Override
-          public void onLoadMore(TwinklingRefreshLayout refreshLayout) {
+          public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
               if (mCategoryPagerPresenter!=null) {
                   mCategoryPagerPresenter.loaderMore(materialId);
               }
@@ -223,16 +227,16 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
 
     @Override
     public void onLoadMoreError() {
-        if (twinklingRefreshLayout!=null) {
-            twinklingRefreshLayout.finishLoadmore();
+        if (mSmartRefreshLayout!=null) {
+            mSmartRefreshLayout.finishLoadMore();
         }
         ToastUtils.showToast("加载网络失败了");
     }
 
     @Override
     public void onLoadMoreEmpty() {
-        if (twinklingRefreshLayout!=null) {
-            twinklingRefreshLayout.finishLoadmore();
+        if (mSmartRefreshLayout!=null) {
+            mSmartRefreshLayout.finishLoadMore();
         }
         ToastUtils.showToast("没有更多数据了");
     }
@@ -240,8 +244,8 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
     @Override
     public void onLoadMoreLoaded(List<HomePagerContent.DataBean> contents) {
         mContentAdapter.addData(contents);
-        if (twinklingRefreshLayout!=null) {
-            twinklingRefreshLayout.finishLoadmore();
+        if (mSmartRefreshLayout!=null) {
+            mSmartRefreshLayout.finishLoadMore();
         }
         ToastUtils.showToast("加载了" + contents.size() + "条数据");
     }

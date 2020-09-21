@@ -16,7 +16,6 @@ import com.cool.taobaojava.R;
 import com.cool.taobaojava.model.domain.HomePagerContent;
 import com.cool.taobaojava.utils.LogUtils;
 import com.cool.taobaojava.utils.UrlUtils;
-import com.lcodecore.tkrefreshlayout.utils.LogUtil;
 
 import java.util.ArrayList;
 import java.util.List;

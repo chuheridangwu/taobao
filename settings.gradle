@@ -1,2 +1,2 @@
-include ':app', ':refreshlibrary'
+include ':app'
 rootProject.name = "TaoBaoJava"

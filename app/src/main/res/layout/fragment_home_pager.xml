@@ -6,10 +6,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout
+    <com.scwang.smart.refresh.layout.SmartRefreshLayout
+        android:id="@+id/home_pager_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/home_pager_refresh">
+        android:layout_height="match_parent">
+        <com.scwang.smart.refresh.header.ClassicsHeader
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></com.scwang.smart.refresh.header.ClassicsHeader>
 
         <com.cool.taobaojava.ui.custom.TbNestedScrollView
             android:layout_width="match_parent"
@@ -59,6 +62,12 @@
             </LinearLayout>
 
         </com.cool.taobaojava.ui.custom.TbNestedScrollView>
-    </com.lcodecore.tkrefreshlayout.TwinklingRefreshLayout>
+
+        <com.scwang.smart.refresh.footer.ClassicsFooter
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></com.scwang.smart.refresh.footer.ClassicsFooter>
+    </com.scwang.smart.refresh.layout.SmartRefreshLayout>
+
+
 
 </LinearLayout>

@@ -1,5 +1,6 @@
 package com.cool.taobaojava.ui.fragment;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
@@ -23,10 +24,13 @@ import com.cool.taobaojava.model.domain.Categories;
 import com.cool.taobaojava.model.domain.HomePagerContent;
 import com.cool.taobaojava.presenter.ICategoryPagerPresenter;
 import com.cool.taobaojava.presenter.impl.CategoryPagePresenterImpl;
+import com.cool.taobaojava.presenter.impl.TicketPresenterImpl;
+import com.cool.taobaojava.ui.activity.TicketActivity;
 import com.cool.taobaojava.ui.adapter.HomePageContentAdapter;
 import com.cool.taobaojava.ui.adapter.LooperPagerAdapter;
 import com.cool.taobaojava.ui.custom.TbNestedScrollView;
 import com.cool.taobaojava.utils.Constants;
+import com.cool.taobaojava.utils.PresentManager;
 import com.cool.taobaojava.utils.SizeUtils;
 import com.cool.taobaojava.utils.ToastUtils;
 import com.cool.taobaojava.view.ICategoryPagerCallback;
@@ -48,6 +52,7 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
     private LinearLayout mHomePagerParent;
     private TbNestedScrollView mHomePagerNestedView;
     private LinearLayout mHomeHeaderContainer;
+    private TicketPresenterImpl ticketPresenter;
 
     public static HomePagerFragment newInstance(Categories.DataBean category){
         HomePagerFragment homePagerFragment = new HomePagerFragment();
@@ -109,7 +114,7 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
 
     @Override
     protected void initPresenter() {
-        mCategoryPagerPresenter = CategoryPagePresenterImpl.getsInstance();
+        mCategoryPagerPresenter = PresentManager.getInstance().getmCategoryPagerPresenter();
         mCategoryPagerPresenter.registerViewCallback(this);
 
         // 设置刷新
@@ -288,11 +293,20 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
 
     @Override
     public void onItemClick(HomePagerContent.DataBean dataBean) {
-
+        handleItemClick(dataBean);
     }
 
     @Override
     public void onLooperItemClick(HomePagerContent.DataBean dataBean) {
+        handleItemClick(dataBean);
+    }
 
+    private void handleItemClick(HomePagerContent.DataBean dataBean){
+        String title = dataBean.getTitle();
+        String url = dataBean.getClick_url();
+        String cover = dataBean.getPict_url();
+
+        ticketPresenter = PresentManager.getInstance().getmTicketPresenter();
+        startActivity(new Intent(getContext(), TicketActivity.class));
     }
 }

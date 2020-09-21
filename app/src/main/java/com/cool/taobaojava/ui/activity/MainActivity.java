@@ -81,9 +81,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // 切换Fragment
+    private Fragment lastFragment;
     private void switchFragment(Fragment fragment) {
         FragmentTransaction transaction = mFm.beginTransaction();
-        transaction.replace(main_page_container,fragment);
+
+        if (fragment.isAdded()){
+            transaction.show(fragment);
+        }else {
+            transaction.add(main_page_container,fragment);
+        }
+        if (lastFragment != null){
+            transaction.hide(lastFragment);
+        }
+        lastFragment = fragment;
+
         transaction.commit();
     }
 }

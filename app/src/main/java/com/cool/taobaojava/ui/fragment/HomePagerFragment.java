@@ -38,7 +38,7 @@ import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 
 import java.util.List;
 
-public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCallback {
+public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCallback,LooperPagerAdapter.OnLooperPageItemClickListener,HomePageContentAdapter.OnListItemClickListener {
 
     private ICategoryPagerPresenter mCategoryPagerPresenter;
     private int materialId;
@@ -119,6 +119,9 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
 
     @Override
     protected void initListener() {
+        mLoopAdapter.setOnLooperPageItemClickListener(this);
+        mContentAdapter.setOnListItemClickListener(this);
+
         // 父类布局，动态设置 RecyclerView 高度
         mHomePagerParent.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -281,5 +284,15 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
     @Override
     public int getCategoryId() {
         return materialId;
+    }
+
+    @Override
+    public void onItemClick(HomePagerContent.DataBean dataBean) {
+
+    }
+
+    @Override
+    public void onLooperItemClick(HomePagerContent.DataBean dataBean) {
+
     }
 }

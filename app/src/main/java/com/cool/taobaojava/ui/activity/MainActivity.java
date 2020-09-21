@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.cool.taobaojava.R;
+import com.cool.taobaojava.base.BaseActivity;
 import com.cool.taobaojava.ui.fragment.HomeFragment;
 import com.cool.taobaojava.ui.fragment.RedPacketFragment;
 import com.cool.taobaojava.ui.fragment.SearchFragment;
@@ -21,7 +22,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import static com.cool.taobaojava.R.id.main_page_container;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
     private BottomNavigationView mNavigationView;
     private HomeFragment mHomeFragment;
@@ -31,16 +32,12 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager mFm;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        initView();
-
-        initListener();
+    public int getLayoutResId() {
+        return R.layout.activity_main;
     }
 
-    private void initListener() {
+    @Override
+    protected void initEvent() {
         mNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -68,7 +65,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
         mNavigationView = findViewById(R.id.main_navigation_bar);
 
         mHomeFragment = new HomeFragment();

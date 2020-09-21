@@ -23,6 +23,7 @@ import java.util.List;
 public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContentAdapter.InnerHolder> {
 
     List<HomePagerContent.DataBean> mData = new ArrayList<>();
+    private OnListItemClickListener mItemClicklistener;
 
     @NonNull
     @Override
@@ -38,6 +39,15 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
 
         HomePagerContent.DataBean dataBean = mData.get(position);
         holder.setData(dataBean);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mItemClicklistener!=null) {
+                    mItemClicklistener.onItemClick(dataBean);
+                }
+            }
+        });
     }
 
     @Override
@@ -100,4 +110,14 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
             good_buy_count.setText(String.format(itemView.getContext().getString(R.string.text_goods_sell_count),dataBean.getVolume()));
         }
     }
+
+    public void setOnListItemClickListener(OnListItemClickListener listener){
+        mItemClicklistener = listener;
+    }
+
+
+    public interface OnListItemClickListener{
+        void onItemClick(HomePagerContent.DataBean dataBean);
+    }
+
 }

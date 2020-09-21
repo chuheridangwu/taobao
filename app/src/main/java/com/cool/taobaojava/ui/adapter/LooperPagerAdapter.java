@@ -20,6 +20,7 @@ import java.util.List;
 public class LooperPagerAdapter extends RecyclerView.Adapter<LooperPagerAdapter.InnerHolder> {
 
     List<HomePagerContent.DataBean> dataList = new ArrayList<>();
+    private OnLooperPageItemClickListener mItemClickListener;
 
     public int getDataSize(){
         return dataList.size();
@@ -45,6 +46,15 @@ public class LooperPagerAdapter extends RecyclerView.Adapter<LooperPagerAdapter.
         HomePagerContent.DataBean data = dataList.get(realPosition);
         ImageView iv = (ImageView)holder.itemView;
         Glide.with(iv).load(UrlUtils.getCoverPath(data.getPict_url(),180)).into(iv);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mItemClickListener !=null) {
+                    mItemClickListener.onLooperItemClick(data);
+                }
+            }
+        });
     }
 
     @Override
@@ -63,5 +73,14 @@ public class LooperPagerAdapter extends RecyclerView.Adapter<LooperPagerAdapter.
         public InnerHolder(@NonNull View itemView) {
             super(itemView);
         }
+    }
+
+
+    public void setOnLooperPageItemClickListener(OnLooperPageItemClickListener listener){
+        mItemClickListener = listener;
+    }
+
+    public interface OnLooperPageItemClickListener{
+        void onLooperItemClick(HomePagerContent.DataBean dataBean);
     }
 }

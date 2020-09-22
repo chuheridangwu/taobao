@@ -11,7 +11,7 @@ import androidx.appcompat.widget.AppCompatImageView;
 
 import com.cool.taobaojava.R;
 
-class LoadingView extends AppCompatImageView {
+public class LoadingView extends AppCompatImageView {
 
     private float mDegrees = 0;
     private boolean mNeedRotates = true;
@@ -37,7 +37,7 @@ class LoadingView extends AppCompatImageView {
     }
 
     private void startRotate() {
-        mNeedRotates = false;
+        mNeedRotates = true;
 
         post(new Runnable() {
             @Override
@@ -47,10 +47,10 @@ class LoadingView extends AppCompatImageView {
                     mDegrees = 0;
                 }
                 invalidate();
-                if (getVisibility() == VISIBLE || mNeedRotates){
-                    removeCallbacks(this);
+                if (getVisibility() == VISIBLE && mNeedRotates){
+                    postDelayed(this,10);
                 }else {
-                    postDelayed(this,100);
+                    removeCallbacks(this);
                 }
             }
         });
@@ -64,13 +64,13 @@ class LoadingView extends AppCompatImageView {
     }
 
     private void stopRotate() {
-        mNeedRotates = true;
+        mNeedRotates = false;
     }
 
     // 转动view
     @Override
     protected void onDraw(Canvas canvas) {
-        canvas.rotate(10,getWidth()/2,getHeight()/2);
+        canvas.rotate(mDegrees,getWidth()/2,getHeight()/2);
         super.onDraw(canvas);
     }
 }

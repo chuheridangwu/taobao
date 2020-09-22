@@ -14,7 +14,6 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
-import retrofit2.http.Url;
 
 public class SelectedPagePresenterImpl implements ISelectedPagePresenter {
 
@@ -31,7 +30,7 @@ public class SelectedPagePresenterImpl implements ISelectedPagePresenter {
             public void onResponse(Call<SelectedCategory> call, Response<SelectedCategory> response) {
                 int code = response.code();
                 if (code == HttpURLConnection.HTTP_OK){
-                    if (mViewCallback == null) {
+                    if (mViewCallback != null) {
                         mViewCallback.onCategoriesLoaded(response.body());
                     }
                 }else{

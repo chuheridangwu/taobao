@@ -9,4 +9,7 @@
     <color name="colorTabNormal">#aaffffff</color>
     <color name="coltor_tmall">#D0021B</color>
     <color name="colorPagerBg">#EFEEEE</color>
+    <color name="colorEEEEEE">#EEEEEE</color>
+    <color name="colorFFFFFF">#FFFFFF</color>
+
 </resources>

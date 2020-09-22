@@ -31,7 +31,8 @@ public class SelectedPagePresenterImpl implements ISelectedPagePresenter {
                 int code = response.code();
                 if (code == HttpURLConnection.HTTP_OK){
                     if (mViewCallback != null) {
-                        mViewCallback.onCategoriesLoaded(response.body());
+                        SelectedCategory category = response.body();
+                        mViewCallback.onCategoriesLoaded(category);
                     }
                 }else{
                     onLoadedError();
@@ -64,7 +65,7 @@ public class SelectedPagePresenterImpl implements ISelectedPagePresenter {
             public void onResponse(Call<SelectedContent> call, Response<SelectedContent> response) {
                 int code = response.code();
                 if (code == HttpURLConnection.HTTP_OK){
-                    if (mViewCallback == null) {
+                    if (mViewCallback != null) {
                         mViewCallback.onContentLoad(response.body());
                     }
                 }else{

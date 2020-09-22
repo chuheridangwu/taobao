@@ -307,6 +307,7 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
         String cover = dataBean.getPict_url();
 
         ticketPresenter = PresentManager.getInstance().getmTicketPresenter();
+        ticketPresenter.getTicket(title,url,cover);
         startActivity(new Intent(getContext(), TicketActivity.class));
     }
 }

@@ -11,6 +11,7 @@
         android:layout_height="40dp">
         
         <ImageView
+            android:id="@+id/ticket_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -28,6 +29,7 @@
     </RelativeLayout>
     
     <ImageView
+        android:id="@+id/ticket_icon"
         android:layout_gravity="center"
         android:layout_width="300dp"
         android:layout_height="300dp"
@@ -35,15 +37,19 @@
         android:src="@mipmap/ic_launcher"></ImageView>
 
     <EditText
-        android:padding="10dp"
+        android:id="@+id/ticket_code"
         android:focusable="false"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
-        android:layout_width="244dp"
+        android:layout_width="wrap_content"
         android:layout_height="40dp"
+        android:textAlignment="center"
+        android:textSize="12sp"
+        android:textColor="@color/colorPrimaryDark"
         android:background="@drawable/shape_ticket_code_box_bg"></EditText>
 
     <Button
+        android:id="@+id/ticket_btn"
         android:layout_marginTop="20dp"
         android:layout_gravity="center"
         android:layout_width="120dp"

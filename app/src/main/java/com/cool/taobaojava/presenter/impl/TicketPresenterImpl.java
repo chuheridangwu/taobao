@@ -32,10 +32,9 @@ public class TicketPresenterImpl implements ITicketPresenter {
     public void getTicket(String title, String url, String cover) {
         currentState = LoadState.LOADING;
         onTicketLoading();
-
-        mCover = cover;
-
         String targetUrl = UrlUtils.getTicketUrl(url);
+        mCover = UrlUtils.getTicketUrl(cover);
+
 
         Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
         Api api = retrofit.create(Api.class);
@@ -79,7 +78,6 @@ public class TicketPresenterImpl implements ITicketPresenter {
 
     @Override
     public void registerViewCallback(ITicketPagerCallback callBack) {
-        mViewCallBack = callBack;
         if (currentState != LoadState.NONE){
            if (currentState == LoadState.SUCCESS){
                onTicketLoadedSuccess();
@@ -91,6 +89,7 @@ public class TicketPresenterImpl implements ITicketPresenter {
                 onTicketLoading();
             }
        }
+        mViewCallBack = callBack;
     }
 
     private void onTicketLoading() {

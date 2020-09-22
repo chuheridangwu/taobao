@@ -64,7 +64,6 @@ public class MainActivity extends BaseActivity {
             }
         });
     }
-
     @Override
     protected void initView() {
         mNavigationView = findViewById(R.id.main_navigation_bar);

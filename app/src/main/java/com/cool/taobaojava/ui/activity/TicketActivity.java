@@ -1,6 +1,9 @@
 package com.cool.taobaojava.ui.activity;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -21,6 +24,8 @@ public class TicketActivity extends BaseActivity implements ITicketPagerCallback
     private ImageView mIconView;
     private View mBack;
     private LoadingView mLoadingView;
+    private Button mBtn;
+    private boolean mHasTabbaoApp;
 
 
     @Override
@@ -34,6 +39,7 @@ public class TicketActivity extends BaseActivity implements ITicketPagerCallback
         mIconView = findViewById(R.id.ticket_icon);
         mBack = findViewById(R.id.ticket_back);
         mLoadingView = findViewById(R.id.ticket_cover_loading);
+        mBtn = findViewById(R.id.ticket_btn);
     }
 
     @Override
@@ -44,6 +50,25 @@ public class TicketActivity extends BaseActivity implements ITicketPagerCallback
                 finish();
             }
         });
+
+        mBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        // 判断是否有安装淘宝
+        PackageManager pm = getPackageManager();
+        try {
+            PackageInfo packageInfo = pm.getPackageInfo("com.taobao.taobao",PackageManager.MATCH_UNINSTALLED_PACKAGES);
+            mHasTabbaoApp = packageInfo != null;
+        }catch (Exception e){
+            e.printStackTrace();
+            mHasTabbaoApp = false;
+        }
+
+        mBtn.setText(mHasTabbaoApp ? "打开淘宝领劵" : "复制淘宝口令");
     }
 
     @Override

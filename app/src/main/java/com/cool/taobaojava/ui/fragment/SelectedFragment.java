@@ -17,10 +17,11 @@ import com.cool.taobaojava.model.domain.SelectedCategory;
 import com.cool.taobaojava.model.domain.SelectedContent;
 import com.cool.taobaojava.presenter.impl.SelectedPagePresenterImpl;
 import com.cool.taobaojava.ui.adapter.SelectedPageLeftAdapter;
+import com.cool.taobaojava.utils.LogUtils;
 import com.cool.taobaojava.utils.PresentManager;
 import com.cool.taobaojava.view.ISelectedPageCallback;
 
-public class SelectedFragment extends BaseFragment implements ISelectedPageCallback {
+public class SelectedFragment extends BaseFragment implements ISelectedPageCallback, SelectedPageLeftAdapter.onLeftItemClickListener {
 
     private SelectedPagePresenterImpl mSelectedPagePresenter;
     private SelectedCategory.DataBean mItem;
@@ -48,7 +49,7 @@ public class SelectedFragment extends BaseFragment implements ISelectedPageCallb
 
     @Override
     protected void initListener() {
-
+        mLeftAdapter.setOnLeftItemClickListener(this);
     }
 
     @Override
@@ -92,5 +93,10 @@ public class SelectedFragment extends BaseFragment implements ISelectedPageCallb
     public void onEmpty() {
         setUpState(State.EMPTY);
 
+    }
+
+    @Override
+    public void onLeftItemClick(SelectedCategory.DataBean item) {
+        LogUtils.d(this,"点击的title" + item.getFavorites_title());
     }
 }

@@ -19,6 +19,7 @@ public class SelectedPageLeftAdapter extends RecyclerView.Adapter<SelectedPageLe
 
     private List<SelectedCategory.DataBean> mData = new ArrayList<>();
     private int mCurrentSelectedPosition = 0;
+    private onLeftItemClickListener mItemClickListener;
 
     @NonNull
     @Override
@@ -38,6 +39,17 @@ public class SelectedPageLeftAdapter extends RecyclerView.Adapter<SelectedPageLe
 
         SelectedCategory.DataBean dataBean = mData.get(position);
         itemTv.setText(dataBean.getFavorites_title());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mItemClickListener != null && mCurrentSelectedPosition != position) {
+                    mCurrentSelectedPosition = position;
+                    mItemClickListener.onLeftItemClick(dataBean);
+                    notifyDataSetChanged();
+                }
+            }
+        });
     }
 
     @Override
@@ -59,5 +71,13 @@ public class SelectedPageLeftAdapter extends RecyclerView.Adapter<SelectedPageLe
         public InnerHolder(@NonNull View itemView) {
             super(itemView);
         }
+    }
+
+    public void setOnLeftItemClickListener(onLeftItemClickListener listener){
+        mItemClickListener = listener;
+    }
+
+    public interface onLeftItemClickListener{
+        void onLeftItemClick(SelectedCategory.DataBean item);
     }
 }

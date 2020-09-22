@@ -2,6 +2,7 @@ package com.cool.taobaojava.model;
 
 import com.cool.taobaojava.model.domain.Categories;
 import com.cool.taobaojava.model.domain.HomePagerContent;
+import com.cool.taobaojava.model.domain.OnSellContent;
 import com.cool.taobaojava.model.domain.SelectedCategory;
 import com.cool.taobaojava.model.domain.SelectedContent;
 import com.cool.taobaojava.model.domain.TicketParams;
@@ -29,4 +30,7 @@ public interface Api {
 
     @GET()
     Call<SelectedContent> getSelectedPageContent(@Url String url);
+
+    @GET()
+    Call<OnSellContent> getOnSellPageContent(@Url String url);
 }

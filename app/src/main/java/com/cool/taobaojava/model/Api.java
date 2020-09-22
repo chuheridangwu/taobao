@@ -27,6 +27,6 @@ public interface Api {
     @GET("recommend/categories")
     Call<SelectedCategory> getSelectedPageCategory();
 
-    @GET("recommend/categoryId")
-    Call<SelectedContent> getSelectedPageContent(@Query("categoryId") int categoryId);
+    @GET()
+    Call<SelectedContent> getSelectedPageContent(@Url String url);
 }

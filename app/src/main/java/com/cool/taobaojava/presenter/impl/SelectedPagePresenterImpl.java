@@ -5,6 +5,7 @@ import com.cool.taobaojava.model.domain.SelectedCategory;
 import com.cool.taobaojava.model.domain.SelectedContent;
 import com.cool.taobaojava.presenter.ISelectedPagePresenter;
 import com.cool.taobaojava.utils.RetrofitManager;
+import com.cool.taobaojava.utils.UrlUtils;
 import com.cool.taobaojava.view.ISelectedPageCallback;
 
 import java.net.HttpURLConnection;
@@ -13,6 +14,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.Retrofit;
+import retrofit2.http.Url;
 
 public class SelectedPagePresenterImpl implements ISelectedPagePresenter {
 
@@ -55,7 +57,9 @@ public class SelectedPagePresenterImpl implements ISelectedPagePresenter {
         mCurrentCategoryItem = item;
         Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
         Api api = retrofit.create(Api.class);
-        Call<SelectedContent> task = api.getSelectedPageContent(item.getFavorites_id());
+
+        String url = UrlUtils.getSelectedPageContentUrl(item.getFavorites_id());
+        Call<SelectedContent> task = api.getSelectedPageContent(url);
         task.enqueue(new Callback<SelectedContent>() {
             @Override
             public void onResponse(Call<SelectedContent> call, Response<SelectedContent> response) {

@@ -1,5 +1,10 @@
 package com.cool.taobaojava.ui.activity;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.view.View;
@@ -14,6 +19,7 @@ import com.cool.taobaojava.model.domain.TicketResult;
 import com.cool.taobaojava.presenter.impl.TicketPresenterImpl;
 import com.cool.taobaojava.ui.custom.LoadingView;
 import com.cool.taobaojava.utils.PresentManager;
+import com.cool.taobaojava.utils.ToastUtils;
 import com.cool.taobaojava.utils.UrlUtils;
 import com.cool.taobaojava.view.ITicketPagerCallback;
 
@@ -54,9 +60,30 @@ public class TicketActivity extends BaseActivity implements ITicketPagerCallback
         mBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // 使用粘贴板复制功能
+                String ticketCode = mCodeView.getText().toString().trim();
+                ClipboardManager cm = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipData clipData = ClipData.newPlainText("sob_taobao_ticket_code",ticketCode);
+                cm.setPrimaryClip(clipData);
+                if (mHasTabbaoApp){
+                    // 跳转到淘宝
+                    Intent taobao = new Intent();
+                    ComponentName componentName = new ComponentName("com.taobao.taobao","com.taobao.taobao.welcome.Welcome");
+                    taobao.setComponent(componentName);
+                    startActivity(taobao);
 
+                }else {
+                    ToastUtils.showToast("复制成功,粘贴分享到淘宝");
+                }
             }
         });
+
+    }
+
+    @Override
+    protected void initPresenter() {
+        mTicketPresenter = PresentManager.getInstance().getmTicketPresenter();
+        mTicketPresenter.registerViewCallback(this);
 
         // 判断是否有安装淘宝
         PackageManager pm = getPackageManager();
@@ -69,12 +96,6 @@ public class TicketActivity extends BaseActivity implements ITicketPagerCallback
         }
 
         mBtn.setText(mHasTabbaoApp ? "打开淘宝领劵" : "复制淘宝口令");
-    }
-
-    @Override
-    protected void initPresenter() {
-        mTicketPresenter = PresentManager.getInstance().getmTicketPresenter();
-        mTicketPresenter.registerViewCallback(this);
     }
 
     @Override

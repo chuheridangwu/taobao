@@ -9,6 +9,7 @@ import com.cool.taobaojava.R;
 import com.cool.taobaojava.base.BaseActivity;
 import com.cool.taobaojava.model.domain.TicketResult;
 import com.cool.taobaojava.presenter.impl.TicketPresenterImpl;
+import com.cool.taobaojava.ui.custom.LoadingView;
 import com.cool.taobaojava.utils.PresentManager;
 import com.cool.taobaojava.utils.UrlUtils;
 import com.cool.taobaojava.view.ITicketPagerCallback;
@@ -19,6 +20,7 @@ public class TicketActivity extends BaseActivity implements ITicketPagerCallback
     private EditText mCodeView;
     private ImageView mIconView;
     private View mBack;
+    private LoadingView mLoadingView;
 
 
     @Override
@@ -31,6 +33,7 @@ public class TicketActivity extends BaseActivity implements ITicketPagerCallback
         mCodeView = findViewById(R.id.ticket_code);
         mIconView = findViewById(R.id.ticket_icon);
         mBack = findViewById(R.id.ticket_back);
+        mLoadingView = findViewById(R.id.ticket_cover_loading);
     }
 
     @Override
@@ -58,6 +61,9 @@ public class TicketActivity extends BaseActivity implements ITicketPagerCallback
 
     @Override
     public void onTicketLoaded(String cover, TicketResult result) {
+        if (mLoadingView == null) {
+            mLoadingView.setVisibility(View.VISIBLE);
+        }
         if (!cover.isEmpty()){
             Glide.with(this).load(cover).into(mIconView);
         }
@@ -68,12 +74,16 @@ public class TicketActivity extends BaseActivity implements ITicketPagerCallback
 
     @Override
     public void onError() {
-
+        if (mLoadingView == null) {
+            mLoadingView.setVisibility(View.GONE);
+        }
     }
 
     @Override
     public void onLoading() {
-
+        if (mLoadingView == null) {
+            mLoadingView.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override

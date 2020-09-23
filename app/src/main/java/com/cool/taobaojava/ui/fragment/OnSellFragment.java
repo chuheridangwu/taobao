@@ -2,7 +2,10 @@ package com.cool.taobaojava.ui.fragment;
 
 import android.content.Intent;
 import android.graphics.Rect;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -33,11 +36,17 @@ public class OnSellFragment extends BaseFragment implements IOnSellPageCallback,
     private static final int DEFAULT_SPAN_COUNT = 2;
     private SmartRefreshLayout mRefresh;
     private TicketPresenterImpl ticketPresenter;
+    private TextView mTitle;
 
 
     @Override
     protected int getRootViewResId() {
         return R.layout.fragment_on_sell;
+    }
+
+    @Override
+    protected View loadRootView(LayoutInflater inflater, ViewGroup container) {
+        return LayoutInflater.from(getContext()).inflate(R.layout.fragment_with_bar_layout,container,false);
     }
 
     @Override
@@ -60,6 +69,9 @@ public class OnSellFragment extends BaseFragment implements IOnSellPageCallback,
         mRefresh = rootView.findViewById(R.id.on_sell_refresh);
         // 设置刷新
         mRefresh.setRefreshFooter(new ClassicsFooter(getContext()));
+
+        mTitle = rootView.findViewById(R.id.bar_title_tv);
+        mTitle.setText("特惠精选");
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,10 +33,16 @@ public class SelectedFragment extends BaseFragment implements ISelectedPageCallb
     private SelectedPageLeftAdapter mLeftAdapter;
     private RecyclerView rightContentList;
     private SelectedPageRightAdapter mRightAdapter;
+    private TextView mTitle;
 
     @Override
     protected int getRootViewResId() {
         return R.layout.fragment_selected;
+    }
+
+    @Override
+    protected View loadRootView(LayoutInflater inflater, ViewGroup container) {
+        return inflater.inflate(R.layout.fragment_with_bar_layout,container,false);
     }
 
     @Override
@@ -82,6 +89,8 @@ public class SelectedFragment extends BaseFragment implements ISelectedPageCallb
             }
         });
 
+        mTitle = rootView.findViewById(R.id.bar_title_tv);
+        mTitle.setText("精选宝贝");
     }
 
     @Override

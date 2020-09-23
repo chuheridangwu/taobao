@@ -4,6 +4,7 @@ import com.cool.taobaojava.presenter.ICategoryPagerPresenter;
 import com.cool.taobaojava.presenter.impl.CategoryPagePresenterImpl;
 import com.cool.taobaojava.presenter.impl.HomePresenterImpl;
 import com.cool.taobaojava.presenter.impl.OnSellPagePresenterImpl;
+import com.cool.taobaojava.presenter.impl.SearchPresenter;
 import com.cool.taobaojava.presenter.impl.SelectedPagePresenterImpl;
 import com.cool.taobaojava.presenter.impl.TicketPresenterImpl;
 
@@ -15,6 +16,7 @@ public class PresentManager {
     private final TicketPresenterImpl mTicketPresenter;
     private final SelectedPagePresenterImpl mSelectedPresenter;
     private final OnSellPagePresenterImpl mOnSellPresenter;
+    private final SearchPresenter mSearchPresenter;
 
 
     public static PresentManager getInstance(){
@@ -27,6 +29,7 @@ public class PresentManager {
         mTicketPresenter = new TicketPresenterImpl();
         mSelectedPresenter = new SelectedPagePresenterImpl();
         mOnSellPresenter = new OnSellPagePresenterImpl();
+        mSearchPresenter = new SearchPresenter();
     }
 
     public ICategoryPagerPresenter getmCategoryPagerPresenter() {
@@ -47,5 +50,9 @@ public class PresentManager {
 
     public OnSellPagePresenterImpl getmOnSellPresenter() {
         return mOnSellPresenter;
+    }
+
+    public SearchPresenter getmSearchPresenter() {
+        return mSearchPresenter;
     }
 }

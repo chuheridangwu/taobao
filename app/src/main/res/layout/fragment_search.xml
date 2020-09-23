@@ -4,11 +4,9 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView
-        android:text="搜索"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        ></TextView>
+    <!--    历史记录-->
+    <!--    推荐关键字-->
+    <!--    搜索结果-->
+
 
 </LinearLayout>

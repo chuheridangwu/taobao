@@ -211,13 +211,15 @@ public class SearchPresenter implements ISearchPresenter {
             histories = new Histories();
         }
 
+        histories.setHistories(historiesList);
+
         if (historiesList.size() > historiesMaxSize) {
             historiesList = historiesList.subList(0,historiesMaxSize);
         }
 
         historiesList.add(history);
 
-        mJsonCacheUtil.saveCache(KEY_HISTORIES,historiesList);
+        mJsonCacheUtil.saveCache(KEY_HISTORIES,history);
     }
 
     @Override

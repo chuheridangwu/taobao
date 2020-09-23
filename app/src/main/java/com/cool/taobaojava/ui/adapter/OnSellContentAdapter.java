@@ -46,6 +46,13 @@ public class OnSellContentAdapter extends RecyclerView.Adapter<OnSellContentAdap
         notifyDataSetChanged();
     }
 
+    public void setMoreData(OnSellContent result) {
+        List<OnSellContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean> data = result.getData().getTbk_dg_optimus_material_response().getResult_list().getMap_data();
+        int olderSize = mData.size();
+        mData.addAll(data);
+        notifyItemChanged(olderSize-1,mData.size());
+    }
+
     public class InnerHolder extends RecyclerView.ViewHolder{
 
         private TextView mTitleTv;

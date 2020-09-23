@@ -64,7 +64,7 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
     public void addData(List<HomePagerContent.DataBean> contents) {
         int olderSize = mData.size();
         mData.addAll(contents);
-        notifyItemRangeChanged(olderSize,mData.size());
+        notifyItemRangeChanged(olderSize-1,mData.size());
     }
 
     public class InnerHolder extends RecyclerView.ViewHolder{

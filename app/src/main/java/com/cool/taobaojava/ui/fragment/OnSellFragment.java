@@ -14,7 +14,13 @@ import com.cool.taobaojava.presenter.impl.OnSellPagePresenterImpl;
 import com.cool.taobaojava.ui.adapter.OnSellContentAdapter;
 import com.cool.taobaojava.utils.PresentManager;
 import com.cool.taobaojava.utils.SizeUtils;
+import com.cool.taobaojava.utils.ToastUtils;
 import com.cool.taobaojava.view.IOnSellPageCallback;
+import com.scwang.smart.refresh.footer.ClassicsFooter;
+import com.scwang.smart.refresh.header.ClassicsHeader;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 
 public class OnSellFragment extends BaseFragment implements IOnSellPageCallback {
 
@@ -22,6 +28,7 @@ public class OnSellFragment extends BaseFragment implements IOnSellPageCallback 
     private RecyclerView mContentList;
     private OnSellContentAdapter mContentAdapter;
     private static final int DEFAULT_SPAN_COUNT = 2;
+    private SmartRefreshLayout mRefresh;
 
 
     @Override
@@ -45,11 +52,20 @@ public class OnSellFragment extends BaseFragment implements IOnSellPageCallback 
                 outRect.right = SizeUtils.dip2px(getContext(),2.5f);
             }
         });
+
+        mRefresh = rootView.findViewById(R.id.on_sell_refresh);
+        // 设置刷新
+        mRefresh.setRefreshFooter(new ClassicsFooter(getContext()));
     }
 
     @Override
     protected void initListener() {
-
+        mRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                mOnSellPresenter.loaderMore();
+            }
+        });
 
     }
 
@@ -69,21 +85,29 @@ public class OnSellFragment extends BaseFragment implements IOnSellPageCallback 
     public void onContentLoadSuccess(OnSellContent result) {
         setUpState(State.SUCCESS);
         mContentAdapter.setData(result);
+        mRefresh.setEnableLoadMore(true);
     }
 
     @Override
     public void onMoreLoaded(OnSellContent result) {
+        mContentAdapter.setMoreData(result);
+        mRefresh.finishLoadMore();
+        int size = result.getData().getTbk_dg_optimus_material_response().getResult_list().getMap_data().size();
+        ToastUtils.showToast("加载了" + size + "条数据");
 
     }
 
     @Override
     public void onMoreLoadedError() {
+        mRefresh.finishLoadMore();
+        ToastUtils.showToast("加载数据出错了....");
 
     }
 
     @Override
     public void onMoreLoadedEmpty() {
-
+        mRefresh.finishLoadMore();
+        ToastUtils.showToast("没有更多数据了");
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.cool.taobaojava.ui.fragment;
 
+import android.content.Intent;
 import android.graphics.Rect;
 import android.view.View;
 
@@ -11,6 +12,8 @@ import com.cool.taobaojava.R;
 import com.cool.taobaojava.base.BaseFragment;
 import com.cool.taobaojava.model.domain.OnSellContent;
 import com.cool.taobaojava.presenter.impl.OnSellPagePresenterImpl;
+import com.cool.taobaojava.presenter.impl.TicketPresenterImpl;
+import com.cool.taobaojava.ui.activity.TicketActivity;
 import com.cool.taobaojava.ui.adapter.OnSellContentAdapter;
 import com.cool.taobaojava.utils.PresentManager;
 import com.cool.taobaojava.utils.SizeUtils;
@@ -22,13 +25,14 @@ import com.scwang.smart.refresh.layout.SmartRefreshLayout;
 import com.scwang.smart.refresh.layout.api.RefreshLayout;
 import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 
-public class OnSellFragment extends BaseFragment implements IOnSellPageCallback {
+public class OnSellFragment extends BaseFragment implements IOnSellPageCallback, OnSellContentAdapter.OnSellPageItemClickListener {
 
     private OnSellPagePresenterImpl mOnSellPresenter;
     private RecyclerView mContentList;
     private OnSellContentAdapter mContentAdapter;
     private static final int DEFAULT_SPAN_COUNT = 2;
     private SmartRefreshLayout mRefresh;
+    private TicketPresenterImpl ticketPresenter;
 
 
     @Override
@@ -67,6 +71,7 @@ public class OnSellFragment extends BaseFragment implements IOnSellPageCallback 
             }
         });
 
+        mContentAdapter.setOnSellPageItemClickListener(this);
     }
 
     @Override
@@ -123,5 +128,16 @@ public class OnSellFragment extends BaseFragment implements IOnSellPageCallback 
     @Override
     public void onEmpty() {
         setUpState(State.EMPTY);
+    }
+
+    @Override
+    public void onSellItemClick(OnSellContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean dataBean) {
+        String title = dataBean.getTitle();
+        String url = dataBean.getClick_url();
+        String cover = dataBean.getPict_url();
+
+        ticketPresenter = PresentManager.getInstance().getmTicketPresenter();
+        ticketPresenter.getTicket(title,url,cover);
+        startActivity(new Intent(getContext(), TicketActivity.class));
     }
 }

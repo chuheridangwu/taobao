@@ -21,6 +21,7 @@ import java.util.List;
 public class OnSellContentAdapter extends RecyclerView.Adapter<OnSellContentAdapter.InnerHolder> {
 
     private List<OnSellContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean> mData = new ArrayList<>();
+    private OnSellPageItemClickListener mContentItemClickListener;
 
     @NonNull
     @Override
@@ -32,6 +33,13 @@ public class OnSellContentAdapter extends RecyclerView.Adapter<OnSellContentAdap
     public void onBindViewHolder(@NonNull OnSellContentAdapter.InnerHolder holder, int position) {
         OnSellContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean dataBean = mData.get(position);
         holder.setData(dataBean);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mContentItemClickListener.onSellItemClick(dataBean);
+            }
+        });
     }
 
     @Override
@@ -85,6 +93,14 @@ public class OnSellContentAdapter extends RecyclerView.Adapter<OnSellContentAdap
             float finalsPrice = originPriseFloat - couponAmount;
             mSellPriceTv.setText("劵后价"  + String.format("%.2f",finalsPrice));
         }
+    }
+
+    public void setOnSellPageItemClickListener(OnSellPageItemClickListener listener){
+        mContentItemClickListener = listener;
+    }
+
+    public interface OnSellPageItemClickListener{
+        void onSellItemClick(OnSellContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean dataBean);
     }
 
 }

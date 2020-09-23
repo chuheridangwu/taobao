@@ -22,6 +22,7 @@ import com.cool.taobaojava.R;
 import com.cool.taobaojava.base.BaseFragment;
 import com.cool.taobaojava.model.domain.Categories;
 import com.cool.taobaojava.model.domain.HomePagerContent;
+import com.cool.taobaojava.model.domain.IBaseInfo;
 import com.cool.taobaojava.presenter.ICategoryPagerPresenter;
 import com.cool.taobaojava.presenter.impl.CategoryPagePresenterImpl;
 import com.cool.taobaojava.presenter.impl.TicketPresenterImpl;
@@ -32,6 +33,7 @@ import com.cool.taobaojava.ui.custom.TbNestedScrollView;
 import com.cool.taobaojava.utils.Constants;
 import com.cool.taobaojava.utils.PresentManager;
 import com.cool.taobaojava.utils.SizeUtils;
+import com.cool.taobaojava.utils.TicketUtil;
 import com.cool.taobaojava.utils.ToastUtils;
 import com.cool.taobaojava.view.ICategoryPagerCallback;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
@@ -52,7 +54,6 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
     private LinearLayout mHomePagerParent;
     private TbNestedScrollView mHomePagerNestedView;
     private LinearLayout mHomeHeaderContainer;
-    private TicketPresenterImpl ticketPresenter;
 
     public static HomePagerFragment newInstance(Categories.DataBean category){
         HomePagerFragment homePagerFragment = new HomePagerFragment();
@@ -302,12 +303,6 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
     }
 
     private void handleItemClick(HomePagerContent.DataBean dataBean){
-        String title = dataBean.getTitle();
-        String url = dataBean.getClick_url();
-        String cover = dataBean.getPict_url();
-
-        ticketPresenter = PresentManager.getInstance().getmTicketPresenter();
-        ticketPresenter.getTicket(title,url,cover);
-        startActivity(new Intent(getContext(), TicketActivity.class));
+        TicketUtil.toTicketPage(getContext(), dataBean);
     }
 }

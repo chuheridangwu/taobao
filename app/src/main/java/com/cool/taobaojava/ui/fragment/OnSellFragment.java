@@ -20,6 +20,7 @@ import com.cool.taobaojava.ui.activity.TicketActivity;
 import com.cool.taobaojava.ui.adapter.OnSellContentAdapter;
 import com.cool.taobaojava.utils.PresentManager;
 import com.cool.taobaojava.utils.SizeUtils;
+import com.cool.taobaojava.utils.TicketUtil;
 import com.cool.taobaojava.utils.ToastUtils;
 import com.cool.taobaojava.view.IOnSellPageCallback;
 import com.scwang.smart.refresh.footer.ClassicsFooter;
@@ -35,7 +36,6 @@ public class OnSellFragment extends BaseFragment implements IOnSellPageCallback,
     private OnSellContentAdapter mContentAdapter;
     private static final int DEFAULT_SPAN_COUNT = 2;
     private SmartRefreshLayout mRefresh;
-    private TicketPresenterImpl ticketPresenter;
     private TextView mTitle;
 
 
@@ -144,12 +144,7 @@ public class OnSellFragment extends BaseFragment implements IOnSellPageCallback,
 
     @Override
     public void onSellItemClick(OnSellContent.DataBean.TbkDgOptimusMaterialResponseBean.ResultListBean.MapDataBean dataBean) {
-        String title = dataBean.getTitle();
-        String url = dataBean.getClick_url();
-        String cover = dataBean.getPict_url();
 
-        ticketPresenter = PresentManager.getInstance().getmTicketPresenter();
-        ticketPresenter.getTicket(title,url,cover);
-        startActivity(new Intent(getContext(), TicketActivity.class));
+        TicketUtil.toTicketPage(getContext(), dataBean);
     }
 }

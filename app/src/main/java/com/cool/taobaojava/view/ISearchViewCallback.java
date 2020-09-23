@@ -1,10 +1,12 @@
 package com.cool.taobaojava.view;
 
+import com.cool.taobaojava.base.IBaseCallback;
+import com.cool.taobaojava.model.domain.SearchRecommend;
 import com.cool.taobaojava.model.domain.SearchResult;
 
 import java.util.List;
 
-public interface ISearchViewCallback {
+public interface ISearchViewCallback extends IBaseCallback {
 
     void onHistoriesLoaded(List<String> histories);
 
@@ -18,6 +20,6 @@ public interface ISearchViewCallback {
 
     void onMoreLoadedEmpty();
 
-    void onRecommendWordsLoaded(List<String> recommendWords);
+    void onRecommendWordsLoaded(List<SearchRecommend.DataBean> recommendWords);
 
 }

@@ -1,20 +1,16 @@
 package com.cool.taobaojava.ui.activity;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.cool.taobaojava.R;
 import com.cool.taobaojava.base.BaseActivity;
 import com.cool.taobaojava.ui.fragment.HomeFragment;
-import com.cool.taobaojava.ui.fragment.RedPacketFragment;
+import com.cool.taobaojava.ui.fragment.OnSellFragment;
 import com.cool.taobaojava.ui.fragment.SearchFragment;
 import com.cool.taobaojava.ui.fragment.SelectedFragment;
 import com.cool.taobaojava.utils.LogUtils;
@@ -26,7 +22,7 @@ public class MainActivity extends BaseActivity {
 
     private BottomNavigationView mNavigationView;
     private HomeFragment mHomeFragment;
-    private RedPacketFragment mRedPacketFragment;
+    private OnSellFragment mOnSellFragment;
     private SelectedFragment mSelectedFragment;
     private SearchFragment mSearchFragment;
     private FragmentManager mFm;
@@ -52,7 +48,7 @@ public class MainActivity extends BaseActivity {
                         break;
                     case R.id.red_packet:
                         LogUtils.e(MainActivity.class,"红包");
-                        switchFragment(mRedPacketFragment);
+                        switchFragment(mOnSellFragment);
                         break;
                     case R.id.search:
                         LogUtils.w(MainActivity.class,"搜索");
@@ -69,7 +65,7 @@ public class MainActivity extends BaseActivity {
         mNavigationView = findViewById(R.id.main_navigation_bar);
 
         mHomeFragment = new HomeFragment();
-        mRedPacketFragment = new RedPacketFragment();
+        mOnSellFragment = new OnSellFragment();
         mSelectedFragment = new SelectedFragment();
         mSearchFragment = new SearchFragment();
         mFm = getSupportFragmentManager();

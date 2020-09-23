@@ -90,7 +90,7 @@ public class SelectedFragment extends BaseFragment implements ISelectedPageCallb
 
         mLeftAdapter.setData(result);
 
-        if (result.getData().size() > 0) {
+        if (result.getData() != null) {
             mItem = result.getData().get(0);
             mSelectedPagePresenter.getContentByCategory(mItem);
         }

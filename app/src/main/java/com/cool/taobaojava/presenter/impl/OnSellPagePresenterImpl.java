@@ -25,7 +25,7 @@ public class OnSellPagePresenterImpl implements IOnSellPagePresenter {
     private final Api mApi;
     private boolean mIsLoading = false;
 
-    private OnSellPagePresenterImpl(){
+    public OnSellPagePresenterImpl(){
         Retrofit retrofit = RetrofitManager.getInstance().getRetrofit();
         mApi = retrofit.create(Api.class);
     }
@@ -67,15 +67,10 @@ public class OnSellPagePresenterImpl implements IOnSellPagePresenter {
         mIsLoading = false;
 
         if (mViewCallback != null) {
-            try {
-                if (isEmpty(content)){
-                    onEmpty();
-                }else {
-                    mViewCallback.onContentLoadSuccess(content);
-                }
-            }catch (Exception e){
-                e.printStackTrace();
+            if (isEmpty(content)){
                 onEmpty();
+            }else {
+                mViewCallback.onContentLoadSuccess(content);
             }
         }
     }

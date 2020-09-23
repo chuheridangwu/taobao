@@ -1,13 +1,18 @@
 package com.cool.taobaojava.presenter.impl;
 
 import com.cool.taobaojava.model.Api;
+import com.cool.taobaojava.model.domain.Histories;
 import com.cool.taobaojava.model.domain.SearchRecommend;
 import com.cool.taobaojava.model.domain.SearchResult;
 import com.cool.taobaojava.presenter.ISearchPresenter;
+import com.cool.taobaojava.utils.JsonCacheUtil;
 import com.cool.taobaojava.utils.RetrofitManager;
 import com.cool.taobaojava.view.ISearchViewCallback;
 
 import java.net.HttpURLConnection;
+import java.security.PublicKey;
+import java.util.ArrayList;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -22,27 +27,34 @@ public class SearchPresenter implements ISearchPresenter {
     private static final int DEFAULT_PAGE = 0;
     private int mCurrentPage = DEFAULT_PAGE;
     private String mCurrentKeyboard;
+    private JsonCacheUtil mJsonCacheUtil;
 
 
     public SearchPresenter(){
         RetrofitManager instance = RetrofitManager.getInstance();
         Retrofit retrofit = instance.getRetrofit();
         mApi = retrofit.create(Api.class);
+        mJsonCacheUtil = JsonCacheUtil.getInstance();
     }
 
     @Override
     public void getHistories() {
-
+        Histories histories = mJsonCacheUtil.getValue(KEY_HISTORIES,Histories.class);
+        if (mViewCallback != null && histories != null && histories.getHistories() != null && histories.getHistories().size() != 0) {
+            mViewCallback.onHistoriesLoaded(histories.getHistories());
+        }
     }
 
     @Override
     public void delHistory() {
+        mJsonCacheUtil.delCache(KEY_HISTORIES);
     }
 
     @Override
     public void doSearch(String keyword) {
         if (mCurrentKeyboard == null || !mCurrentKeyboard.endsWith(keyword)) {
             mCurrentKeyboard =  keyword;
+            saveHistory(keyword);
         }
 
         if (mViewCallback != null) {
@@ -175,6 +187,37 @@ public class SearchPresenter implements ISearchPresenter {
 
             }
         });
+    }
+
+    public static final  String KEY_HISTORIES = "key_histories";
+    public final static  int DEFAULT_HISTORIES_SIZE = 10;
+    private int historiesMaxSize = DEFAULT_HISTORIES_SIZE;
+    // 添加历史记录
+    private void saveHistory(String history){
+        Histories histories = mJsonCacheUtil.getValue(KEY_HISTORIES,Histories.class);
+        List<String> historiesList = null;
+
+        if (histories != null && histories.getHistories() != null) {
+            historiesList =  histories.getHistories();
+            if (historiesList.contains(history)) {
+                historiesList.remove(history);
+            }
+        }
+
+        if (historiesList==null) {
+            historiesList = new ArrayList<>();
+        }
+        if (histories == null) {
+            histories = new Histories();
+        }
+
+        if (historiesList.size() > historiesMaxSize) {
+            historiesList = historiesList.subList(0,historiesMaxSize);
+        }
+
+        historiesList.add(history);
+
+        mJsonCacheUtil.saveCache(KEY_HISTORIES,historiesList);
     }
 
     @Override

@@ -47,7 +47,7 @@ public class JsonCacheUtil {
     }
 
     // 获取
-    public <T extends Class>  T getValue(String key,Class<T> clazz){
+    public <T>  T getValue(String key,Class<T> clazz){
         String valueWithDuration =  mSharedPreferences.getString(key,null);
         if (valueWithDuration==null) {
             return null;
@@ -64,7 +64,7 @@ public class JsonCacheUtil {
     }
 
     private static JsonCacheUtil sJsonCacheUtil = null;
-    private static JsonCacheUtil getInstance(){
+    public static JsonCacheUtil getInstance(){
         if (sJsonCacheUtil == null) {
             sJsonCacheUtil = new JsonCacheUtil();
         }

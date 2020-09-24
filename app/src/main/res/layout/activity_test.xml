@@ -2,15 +2,24 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:sob="http://schemas.android.com/tools">
 
     <com.cool.taobaojava.ui.custom.LoadingView
+        android:id="@+id/text_loading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         ></com.cool.taobaojava.ui.custom.LoadingView>
+
+    <com.cool.taobaojava.ui.custom.TextFlowLayout
+        sob:horizontalSpace="70px"
+        sob:verticalSpace = "70px"
+        app:layout_constraintTop_toBottomOf="@+id/text_loading"
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/text_flow_view"></com.cool.taobaojava.ui.custom.TextFlowLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

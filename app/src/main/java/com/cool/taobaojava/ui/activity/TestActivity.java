@@ -19,6 +19,11 @@ public class TestActivity extends BaseActivity {
         textList.add("电脑");
         textList.add("键盘");
         textList.add("家用电器");
+        textList.add("我是一个键盘");
+        textList.add("家用电器");
+        textList.add("哎呀呀键盘");
+        textList.add("家用电器真是好");
+        textList.add("家用电器真是好");
         TextFlowLayout view = findViewById(R.id.text_flow_view);
         view.setTextList(textList);
     }

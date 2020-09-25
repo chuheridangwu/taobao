@@ -21,6 +21,7 @@ public class TextFlowLayout extends ViewGroup {
     private float mItemVerticalSpace = DEFAULT_SPACE;
     private int mSelfWith;
     private int mItemHeight;
+    private OnFlowTextItemClickListener mItemClickListener;
 
     public float getmItemHorizontalSpace() {
         return mItemHorizontalSpace;
@@ -64,6 +65,16 @@ public class TextFlowLayout extends ViewGroup {
         for (String text : textList) {
          TextView view =  (TextView) LayoutInflater.from(getContext()).inflate(R.layout.flow_text_view,this,false);
          view.setText(text);
+
+         view.setOnClickListener(new OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 if (mItemClickListener != null) {
+                     mItemClickListener.onFlowItemClick(text);
+                 }
+             }
+         });
+
          addView(view);
         }
     }
@@ -153,5 +164,13 @@ public class TextFlowLayout extends ViewGroup {
             }
             topOffset += mItemHeight + mItemVerticalSpace;
         }
+    }
+
+    public void setOnFlowTextItemClickListener(OnFlowTextItemClickListener listener){
+        mItemClickListener = listener;
+    }
+
+    public interface OnFlowTextItemClickListener{
+        void onFlowItemClick(String text);
     }
 }

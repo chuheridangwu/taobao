@@ -87,6 +87,9 @@ public class TextFlowLayout extends ViewGroup {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        if (getChildCount() == 0) {
+            return;
+        }
         // 清空数据
         lines.clear();
         // 单行

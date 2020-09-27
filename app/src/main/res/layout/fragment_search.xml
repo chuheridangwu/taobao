@@ -2,10 +2,57 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:sob="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <!--    历史记录-->
+    <LinearLayout
+        android:id="@+id/search_history_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gray"
+                android:textSize="14sp"
+                android:text="搜索历史"></TextView>
+        </RelativeLayout>
+        <com.cool.taobaojava.ui.custom.TextFlowLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            sob:horizontalSpace="10dp"
+            sob:verticalSpace="10dp"
+            android:id="@+id/search_history_view"></com.cool.taobaojava.ui.custom.TextFlowLayout>
+    </LinearLayout>
     <!--    推荐关键字-->
+    <LinearLayout
+        android:id="@+id/search_recommend_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:padding="16dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gray"
+                android:textSize="14sp"
+                android:text="热门搜索"></TextView>
+        </RelativeLayout>
+        <com.cool.taobaojava.ui.custom.TextFlowLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            sob:horizontalSpace="10dp"
+            sob:verticalSpace="10dp"
+            android:id="@+id/search_recommend_view"></com.cool.taobaojava.ui.custom.TextFlowLayout>
+    </LinearLayout>
     <!--    搜索结果-->
 
 

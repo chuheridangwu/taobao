@@ -9,15 +9,22 @@ import com.cool.taobaojava.base.BaseFragment;
 import com.cool.taobaojava.model.domain.SearchRecommend;
 import com.cool.taobaojava.model.domain.SearchResult;
 import com.cool.taobaojava.presenter.impl.SearchPresenter;
+import com.cool.taobaojava.ui.custom.TextFlowLayout;
 import com.cool.taobaojava.utils.LogUtils;
 import com.cool.taobaojava.utils.PresentManager;
 import com.cool.taobaojava.view.ISearchViewCallback;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SearchFragment extends BaseFragment implements ISearchViewCallback {
 
     private SearchPresenter mSearchPresenter;
+    private TextFlowLayout mTextFlowLayout;
+    private TextFlowLayout mRecommendLayout;
+    private View mHistoryView;
+    private View mRecommendView;
+
 
     @Override
     protected int getRootViewResId() {
@@ -32,6 +39,10 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
     @Override
     protected void initView(View rootView) {
         setUpState(State.SUCCESS);
+        mTextFlowLayout = rootView.findViewById(R.id.search_history_view);
+        mRecommendLayout = rootView.findViewById(R.id.search_recommend_view);
+        mRecommendView = rootView.findViewById(R.id.search_recommend_container);
+        mHistoryView = rootView.findViewById(R.id.search_history_container);
     }
 
     @Override
@@ -44,7 +55,7 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
         mSearchPresenter = PresentManager.getInstance().getmSearchPresenter();
         mSearchPresenter.registerViewCallback(this);
         mSearchPresenter.gerRecommendWords();
-        mSearchPresenter.doSearch("毛衣");
+        mSearchPresenter.getHistories();
     }
 
     @Override
@@ -55,7 +66,12 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
     @Override
     public void onHistoriesLoaded(List<String> histories) {
         LogUtils.d(this,"保存的关键字" + histories);
-
+        if (histories == null || histories.size() == 0){
+            mHistoryView.setVisibility(View.GONE);
+        }else {
+            mHistoryView.setVisibility(View.VISIBLE);
+            mTextFlowLayout.setTextList(histories);
+        }
     }
 
     @Override
@@ -86,7 +102,16 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
 
     @Override
     public void onRecommendWordsLoaded(List<SearchRecommend.DataBean> recommendWords) {
-        LogUtils.d(this,"关键词的数据" + recommendWords.toString());
+        List<String> recommendKeywords = new ArrayList<>();
+        for (SearchRecommend.DataBean item : recommendWords) {
+            recommendKeywords.add(item.getKeyword());
+        }
+        if (recommendKeywords.size() == 0){
+            mHistoryView.setVisibility(View.GONE);
+        }else {
+            mHistoryView.setVisibility(View.VISIBLE);
+            mRecommendLayout.setTextList(recommendKeywords);
+        }
     }
 
     @Override

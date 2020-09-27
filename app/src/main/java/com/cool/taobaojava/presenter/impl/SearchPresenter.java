@@ -219,7 +219,7 @@ public class SearchPresenter implements ISearchPresenter {
 
         historiesList.add(history);
 
-        mJsonCacheUtil.saveCache(KEY_HISTORIES,history);
+        mJsonCacheUtil.saveCache(KEY_HISTORIES,histories);
     }
 
     @Override

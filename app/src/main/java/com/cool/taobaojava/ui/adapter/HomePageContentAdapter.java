@@ -29,7 +29,7 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
     @Override
     public HomePageContentAdapter.InnerHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LogUtils.d(this,"onCreateViewHolder");
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_pager_content,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_linear_goods_content,parent,false);
         return  new InnerHolder(view);
     }
 

@@ -61,6 +61,9 @@
             android:id="@+id/search_recommend_view"></com.cool.taobaojava.ui.custom.TextFlowLayout>
     </LinearLayout>
     <!--    搜索结果-->
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/search_result_list"></androidx.recyclerview.widget.RecyclerView>
 
 </LinearLayout>

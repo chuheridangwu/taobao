@@ -3,9 +3,11 @@ package com.cool.taobaojava.ui.fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.cool.taobaojava.R;
 import com.cool.taobaojava.base.BaseFragment;
+import com.cool.taobaojava.model.domain.Histories;
 import com.cool.taobaojava.model.domain.SearchRecommend;
 import com.cool.taobaojava.model.domain.SearchResult;
 import com.cool.taobaojava.presenter.impl.SearchPresenter;
@@ -24,6 +26,7 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
     private TextFlowLayout mRecommendLayout;
     private View mHistoryView;
     private View mRecommendView;
+    private ImageView mHistoryDelete;
 
 
     @Override
@@ -43,6 +46,7 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
         mRecommendLayout = rootView.findViewById(R.id.search_recommend_view);
         mRecommendView = rootView.findViewById(R.id.search_recommend_container);
         mHistoryView = rootView.findViewById(R.id.search_history_container);
+        mHistoryDelete = rootView.findViewById(R.id.search_history_delete);
     }
 
     @Override
@@ -55,28 +59,36 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
         mSearchPresenter = PresentManager.getInstance().getmSearchPresenter();
         mSearchPresenter.registerViewCallback(this);
         mSearchPresenter.gerRecommendWords();
+        mSearchPresenter.doSearch("diannao");
         mSearchPresenter.getHistories();
     }
 
     @Override
     protected void initListener() {
-
+        mHistoryDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mSearchPresenter.delHistory();
+            }
+        });
     }
 
     @Override
-    public void onHistoriesLoaded(List<String> histories) {
+    public void onHistoriesLoaded(Histories histories) {
         LogUtils.d(this,"保存的关键字" + histories);
-        if (histories == null || histories.size() == 0){
+        if (histories == null || histories.getHistories().size() == 0){
             mHistoryView.setVisibility(View.GONE);
         }else {
             mHistoryView.setVisibility(View.VISIBLE);
-            mTextFlowLayout.setTextList(histories);
+            mTextFlowLayout.setTextList(histories.getHistories());
         }
     }
 
     @Override
-    public void onHistoriesDeleted(List<String> histories) {
-
+    public void onHistoriesDeleted() {
+        if (mSearchPresenter != null) {
+            mSearchPresenter.getHistories();
+        }
     }
 
     @Override
@@ -107,9 +119,9 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
             recommendKeywords.add(item.getKeyword());
         }
         if (recommendKeywords.size() == 0){
-            mHistoryView.setVisibility(View.GONE);
+            mRecommendView.setVisibility(View.GONE);
         }else {
-            mHistoryView.setVisibility(View.VISIBLE);
+            mRecommendView.setVisibility(View.VISIBLE);
             mRecommendLayout.setTextList(recommendKeywords);
         }
     }

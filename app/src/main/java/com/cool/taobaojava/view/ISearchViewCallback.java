@@ -1,6 +1,7 @@
 package com.cool.taobaojava.view;
 
 import com.cool.taobaojava.base.IBaseCallback;
+import com.cool.taobaojava.model.domain.Histories;
 import com.cool.taobaojava.model.domain.SearchRecommend;
 import com.cool.taobaojava.model.domain.SearchResult;
 
@@ -8,9 +9,9 @@ import java.util.List;
 
 public interface ISearchViewCallback extends IBaseCallback {
 
-    void onHistoriesLoaded(List<String> histories);
+    void onHistoriesLoaded(Histories histories);
 
-    void onHistoriesDeleted(List<String> histories);
+    void onHistoriesDeleted();
 
     void onSearchSuccess(SearchResult result);
 

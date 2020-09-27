@@ -43,7 +43,7 @@ public class JsonCacheUtil {
 
     // 删除
     public void delCache(String key){
-      mSharedPreferences.edit().remove(key);
+      mSharedPreferences.edit().remove(key).apply();
     }
 
     // 获取

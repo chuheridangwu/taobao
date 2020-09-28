@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import com.cool.taobaojava.R;
 import com.cool.taobaojava.base.BaseFragment;
 import com.cool.taobaojava.model.domain.Histories;
+import com.cool.taobaojava.model.domain.IBaseInfo;
 import com.cool.taobaojava.model.domain.SearchRecommend;
 import com.cool.taobaojava.model.domain.SearchResult;
 import com.cool.taobaojava.presenter.impl.SearchPresenter;
@@ -18,6 +19,7 @@ import com.cool.taobaojava.ui.custom.TextFlowLayout;
 import com.cool.taobaojava.utils.LogUtils;
 import com.cool.taobaojava.utils.PresentManager;
 import com.cool.taobaojava.utils.SizeUtils;
+import com.cool.taobaojava.utils.TicketUtil;
 import com.cool.taobaojava.utils.ToastUtils;
 import com.cool.taobaojava.view.ISearchViewCallback;
 import com.scwang.smart.refresh.layout.SmartRefreshLayout;
@@ -103,6 +105,14 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
                 }
             }
         });
+
+        // 跳转商品优惠页面
+        mSearchAdapter.setOnListItemClickListener(new HomePageContentAdapter.OnListItemClickListener() {
+            @Override
+            public void onItemClick(IBaseInfo dataBean) {
+                TicketUtil.toTicketPage(getContext(),dataBean);
+            }
+        });
     }
 
     @Override
@@ -179,6 +189,7 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
 
     @Override
     public void onError() {
+        setUpState(State.ERROR);
         ToastUtils.showToast("啊哈，搜索出错了");
     }
 
@@ -189,6 +200,13 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
 
     @Override
     public void onEmpty() {
+        setUpState(State.EMPTY);
+    }
 
+    @Override
+    public void onRetryNetWork() {
+        if (mSearchPresenter != null) {
+            mSearchPresenter.research();
+        }
     }
 }

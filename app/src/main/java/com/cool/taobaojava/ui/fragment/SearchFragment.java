@@ -18,7 +18,11 @@ import com.cool.taobaojava.ui.custom.TextFlowLayout;
 import com.cool.taobaojava.utils.LogUtils;
 import com.cool.taobaojava.utils.PresentManager;
 import com.cool.taobaojava.utils.SizeUtils;
+import com.cool.taobaojava.utils.ToastUtils;
 import com.cool.taobaojava.view.ISearchViewCallback;
+import com.scwang.smart.refresh.layout.SmartRefreshLayout;
+import com.scwang.smart.refresh.layout.api.RefreshLayout;
+import com.scwang.smart.refresh.layout.listener.OnLoadMoreListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,6 +41,7 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
     private ImageView mHistoryDelete;
     private RecyclerView mSearchList;
     private HomePageContentAdapter mSearchAdapter;
+    private SmartRefreshLayout mRefresh;
 
 
     @Override
@@ -62,6 +67,8 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
         mSearchList.setLayoutManager(new LinearLayoutManager(getContext()));
         mSearchAdapter = new HomePageContentAdapter();
         mSearchList.setAdapter(mSearchAdapter);
+
+        mRefresh = rootView.findViewById(R.id.search_refresh);
     }
 
     @Override
@@ -84,6 +91,16 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
             @Override
             public void onClick(View view) {
                 mSearchPresenter.delHistory();
+            }
+        });
+
+        // 上拉加载更多
+        mRefresh.setOnLoadMoreListener(new OnLoadMoreListener() {
+            @Override
+            public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+                if (mSearchPresenter!=null) {
+                    mSearchPresenter.loaderMore();
+                }
             }
         });
     }
@@ -128,16 +145,21 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
 
     @Override
     public void onMoreLoaded(SearchResult result) {
+        mRefresh.finishLoadMore();
+        mSearchAdapter.addData(result.getData().getTbk_dg_material_optional_response().getResult_list().getMap_data());
 
     }
 
     @Override
     public void onMoreLoadedError() {
+        mRefresh.finishLoadMore();
 
     }
 
     @Override
     public void onMoreLoadedEmpty() {
+        mRefresh.finishLoadMore();
+        ToastUtils.showToast("啊哈，没有更多数据了");
 
     }
 
@@ -157,12 +179,12 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
 
     @Override
     public void onError() {
-
+        ToastUtils.showToast("啊哈，搜索出错了");
     }
 
     @Override
     public void onLoading() {
-
+        setUpState(State.LOADING);
     }
 
     @Override

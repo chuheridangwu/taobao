@@ -122,7 +122,7 @@ public class SearchPresenter implements ISearchPresenter {
         mCurrentPage += 1;
         if (mCurrentKeyboard == null) {
             if (mViewCallback != null) {
-
+                mViewCallback.onMoreLoadedEmpty();
             }
         }else {
            doSearchMore();
@@ -152,9 +152,9 @@ public class SearchPresenter implements ISearchPresenter {
     private void onLoadMoreSuccess(SearchResult result){
         if (mViewCallback != null) {
             if (isResultEmpty(result)){
-                mViewCallback.onEmpty();
+                mViewCallback.onMoreLoadedEmpty();
             }else {
-                mViewCallback.onSearchSuccess(result);
+                mViewCallback.onMoreLoaded(result);
             }
         }
     }

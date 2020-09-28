@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.cool.taobaojava.model.domain.HomePagerContent;
+import com.cool.taobaojava.model.domain.IBaseInfo;
 import com.cool.taobaojava.utils.UrlUtils;
 
 import java.util.ArrayList;
@@ -81,6 +82,6 @@ public class LooperPagerAdapter extends RecyclerView.Adapter<LooperPagerAdapter.
     }
 
     public interface OnLooperPageItemClickListener{
-        void onLooperItemClick(HomePagerContent.DataBean dataBean);
+        void onLooperItemClick(IBaseInfo dataBean);
     }
 }

@@ -293,16 +293,16 @@ public class HomePagerFragment extends BaseFragment  implements ICategoryPagerCa
     }
 
     @Override
-    public void onItemClick(HomePagerContent.DataBean dataBean) {
+    public void onItemClick(IBaseInfo dataBean) {
         handleItemClick(dataBean);
     }
 
     @Override
-    public void onLooperItemClick(HomePagerContent.DataBean dataBean) {
+    public void onLooperItemClick(IBaseInfo dataBean) {
         handleItemClick(dataBean);
     }
 
-    private void handleItemClick(HomePagerContent.DataBean dataBean){
+    private void handleItemClick(IBaseInfo dataBean){
         TicketUtil.toTicketPage(getContext(), dataBean);
     }
 }

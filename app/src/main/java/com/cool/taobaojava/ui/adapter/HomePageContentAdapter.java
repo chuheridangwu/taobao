@@ -1,6 +1,7 @@
 package com.cool.taobaojava.ui.adapter;
 
 import android.graphics.Paint;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.cool.taobaojava.R;
 import com.cool.taobaojava.model.domain.HomePagerContent;
+import com.cool.taobaojava.model.domain.IBaseInfo;
+import com.cool.taobaojava.model.domain.ILinearItemInfo;
 import com.cool.taobaojava.utils.LogUtils;
 import com.cool.taobaojava.utils.UrlUtils;
 
@@ -22,7 +25,7 @@ import java.util.List;
 
 public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContentAdapter.InnerHolder> {
 
-    List<HomePagerContent.DataBean> mData = new ArrayList<>();
+    List<ILinearItemInfo> mData = new ArrayList<>();
     private OnListItemClickListener mItemClicklistener;
 
     @NonNull
@@ -37,7 +40,7 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
     public void onBindViewHolder(@NonNull HomePageContentAdapter.InnerHolder holder, int position) {
         LogUtils.d(this,"onBindViewHolder ----" + position);
 
-        HomePagerContent.DataBean dataBean = mData.get(position);
+        ILinearItemInfo dataBean = mData.get(position);
         holder.setData(dataBean);
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -55,13 +58,13 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
         return mData.size();
     }
 
-    public void setData(List<HomePagerContent.DataBean> contents) {
+    public void setData(List<? extends ILinearItemInfo> contents) {
         mData.clear();
         mData.addAll(contents);
         notifyDataSetChanged();
     }
 
-    public void addData(List<HomePagerContent.DataBean> contents) {
+    public void addData(List<? extends ILinearItemInfo> contents) {
         int olderSize = mData.size();
         mData.addAll(contents);
         notifyItemRangeChanged(olderSize-1,mData.size());
@@ -87,8 +90,7 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
             good_buy_count = itemView.findViewById(R.id.goods_buy_count);
         }
 
-        public void setData(HomePagerContent.DataBean dataBean) {
-            Log.d("TAG", "setData: " + dataBean.getPict_url());
+        public void setData(ILinearItemInfo dataBean) {
 
             // 动态计算size去请求图片
             ViewGroup.LayoutParams layoutParams = good_img.getLayoutParams();
@@ -97,11 +99,20 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
             int goodsImgSize = (width > height ? width : height) / 2;
 
 
-            Glide.with(good_img).load(UrlUtils.getCoverPath(dataBean.getPict_url(),goodsImgSize)).into(good_img);
-            good_title.setText(dataBean.getShop_title());
-            good_off_price.setText(String.format(itemView.getContext().getString(R.string.text_goods_off_price),dataBean.getCoupon_amount()));
-            String finalPrice = dataBean.getZk_final_price();
-            long couponAmount = dataBean.getCoupon_amount();
+//            Glide.with(good_img).load(UrlUtils.getCoverPath(dataBean.getCover(),goodsImgSize)).into(good_img);
+            String cover = dataBean.getCover();
+            if(!TextUtils.isEmpty(cover)) {
+                String coverPath = UrlUtils.getCoverPath(dataBean.getCover());
+                Log.d("TAG", "setData: " + coverPath);
+
+                Glide.with(good_img).load(coverPath).into(this.good_img);
+            } else {
+                good_img.setImageResource(R.mipmap.ic_launcher);
+            }
+            good_title.setText(dataBean.getTitle());
+            good_off_price.setText(String.format(itemView.getContext().getString(R.string.text_goods_off_price),dataBean.getCouponAmount()));
+            String finalPrice = dataBean.getFinalPrise();
+            long couponAmount = dataBean.getCouponAmount();
             float resultPrise = Float.parseFloat(finalPrice) - couponAmount;
             good_result_price.setText(String.format("%.2f",resultPrise));
             // 文字中划线
@@ -117,7 +128,7 @@ public class HomePageContentAdapter extends RecyclerView.Adapter<HomePageContent
 
 
     public interface OnListItemClickListener{
-        void onItemClick(HomePagerContent.DataBean dataBean);
+        void onItemClick(IBaseInfo dataBean);
     }
 
 }

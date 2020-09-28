@@ -12,6 +12,7 @@ import com.cool.taobaojava.model.domain.Histories;
 import com.cool.taobaojava.model.domain.SearchRecommend;
 import com.cool.taobaojava.model.domain.SearchResult;
 import com.cool.taobaojava.presenter.impl.SearchPresenter;
+import com.cool.taobaojava.ui.adapter.HomePageContentAdapter;
 import com.cool.taobaojava.ui.adapter.SearchResultAdapter;
 import com.cool.taobaojava.ui.custom.TextFlowLayout;
 import com.cool.taobaojava.utils.LogUtils;
@@ -35,7 +36,7 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
     private View mRecommendView;
     private ImageView mHistoryDelete;
     private RecyclerView mSearchList;
-    private SearchResultAdapter mSearchAdapter;
+    private HomePageContentAdapter mSearchAdapter;
 
 
     @Override
@@ -59,7 +60,7 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
         mSearchList = rootView.findViewById(R.id.search_result_list);
 
         mSearchList.setLayoutManager(new LinearLayoutManager(getContext()));
-        mSearchAdapter = new SearchResultAdapter();
+        mSearchAdapter = new HomePageContentAdapter();
         mSearchList.setAdapter(mSearchAdapter);
     }
 
@@ -114,7 +115,7 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
 
         mSearchList.setVisibility(View.VISIBLE);
 
-        mSearchAdapter.setData(result);
+        mSearchAdapter.setData(result.getData().getTbk_dg_material_optional_response().getResult_list().getMap_data());
         mSearchList.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
             public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {

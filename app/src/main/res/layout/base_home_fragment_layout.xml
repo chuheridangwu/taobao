@@ -31,6 +31,7 @@
             android:padding="10dp"></ImageView>
 
         <EditText
+            android:id="@+id/home_search_edit"
             android:layout_toRightOf="@id/home_log_text"
             android:layout_toLeftOf="@id/home_scan_white"
             android:layout_width="wrap_content"

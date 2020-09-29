@@ -18,7 +18,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import static com.cool.taobaojava.R.id.main_page_container;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity implements IMainActivity {
 
     private BottomNavigationView mNavigationView;
     private HomeFragment mHomeFragment;
@@ -89,5 +89,10 @@ public class MainActivity extends BaseActivity {
         lastFragment = fragment;
 
         transaction.commit();
+    }
+
+    @Override
+    public void switch2Search() {
+        mNavigationView.setSelectedItemId(R.id.search);
     }
 }

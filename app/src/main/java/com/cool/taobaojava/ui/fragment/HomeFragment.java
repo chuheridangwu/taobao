@@ -3,14 +3,18 @@ package com.cool.taobaojava.ui.fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.cool.taobaojava.R;
 import com.cool.taobaojava.base.BaseFragment;
 import com.cool.taobaojava.model.domain.Categories;
 import com.cool.taobaojava.presenter.impl.HomePresenterImpl;
+import com.cool.taobaojava.ui.activity.IMainActivity;
+import com.cool.taobaojava.ui.activity.MainActivity;
 import com.cool.taobaojava.ui.adapter.HomePagerAdapter;
 import com.cool.taobaojava.utils.PresentManager;
 import com.cool.taobaojava.view.IHomeCallBack;
@@ -23,6 +27,7 @@ public class HomeFragment extends BaseFragment  implements IHomeCallBack {
     private TabLayout mTableView;
     private ViewPager2 mPageView2;
     private HomePagerAdapter mHomePagerAdapter;
+    private EditText mSearch;
 
 
     @Override
@@ -36,6 +41,7 @@ public class HomeFragment extends BaseFragment  implements IHomeCallBack {
         mPageView2 = rootView.findViewById(R.id.home_view_page2);
         mHomePagerAdapter = new HomePagerAdapter(this);
         mPageView2.setAdapter(mHomePagerAdapter);
+        mSearch = rootView.findViewById(R.id.home_search_edit);
     }
 
     @Override
@@ -54,6 +60,18 @@ public class HomeFragment extends BaseFragment  implements IHomeCallBack {
     protected void initPresenter() {
         mHomePresenter = PresentManager.getInstance().getmHomePresenter();
         mHomePresenter.registerViewCallback(this);
+
+
+        mSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // 跳转到搜索界面
+                FragmentActivity activity = getActivity();
+                if (activity instanceof IMainActivity){
+                    ((MainActivity)activity).switch2Search();
+                }
+            }
+        });
     }
 
     // 返回的数据

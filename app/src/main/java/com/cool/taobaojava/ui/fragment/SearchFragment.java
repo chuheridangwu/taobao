@@ -330,6 +330,8 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback,
         mSearchList.scrollToPosition(0);
 
         mSearchEdit.setText(text);
+        // 跳转到光标后面
+        mSearchEdit.setSelection(text.length());
         if (mSearchPresenter != null) {
             mSearchPresenter.doSearch(text);
         }

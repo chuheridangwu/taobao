@@ -145,8 +145,8 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback,
                     if (TextUtils.isEmpty(keyword)) {
                         return false;
                     }
-                    mSearchPresenter.doSearch(keyword);
-
+//                    mSearchPresenter.doSearch(keyword);
+                    toSearch(keyword);
                 }
                 return false;
             }
@@ -188,7 +188,8 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback,
             public void onClick(View view) {
                 if (hasInput(false)){
                     if (mSearchPresenter != null) {
-                        mSearchPresenter.doSearch(mSearchEdit.getText().toString().trim());
+//                        mSearchPresenter.doSearch(mSearchEdit.getText().toString().trim());
+                        toSearch(mSearchEdit.getText().toString().trim());
                         // 隐藏键盘
                         KeyboardUtil.hide(getContext(),view);
                     }
@@ -321,6 +322,13 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback,
 
     @Override
     public void onFlowItemClick(String text) {
+        toSearch(text);
+    }
+
+    private void toSearch(String text) {
+        // 回滚到顶部
+        mSearchList.scrollToPosition(0);
+
         mSearchEdit.setText(text);
         if (mSearchPresenter != null) {
             mSearchPresenter.doSearch(text);

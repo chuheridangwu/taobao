@@ -12,6 +12,7 @@ import com.cool.taobaojava.R;
 import com.cool.taobaojava.utils.LogUtils;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class TextFlowLayout extends ViewGroup {
@@ -22,7 +23,7 @@ public class TextFlowLayout extends ViewGroup {
     private int mSelfWith;
     private int mItemHeight;
     private OnFlowTextItemClickListener mItemClickListener;
-    private List<String> mTextList;
+    private List<String> mTextList = new ArrayList<>();
 
     public float getmItemHorizontalSpace() {
         return mItemHorizontalSpace;
@@ -67,7 +68,13 @@ public class TextFlowLayout extends ViewGroup {
     }
 
     public void setTextList(List<String> textList){
-        mTextList = textList;
+        removeAllViews();
+
+        mTextList.clear();
+        mTextList.addAll(textList);
+
+        // 倒转
+        Collections.reverse(textList);
 
         for (String text : textList) {
          TextView view =  (TextView) LayoutInflater.from(getContext()).inflate(R.layout.flow_text_view,this,false);

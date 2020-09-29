@@ -41,7 +41,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class SearchFragment extends BaseFragment implements ISearchViewCallback {
+public class SearchFragment extends BaseFragment implements ISearchViewCallback, TextFlowLayout.OnFlowTextItemClickListener {
 
     private SearchPresenter mSearchPresenter;
     private TextFlowLayout mTextFlowLayout;
@@ -193,18 +193,20 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
                         KeyboardUtil.hide(getContext(),view);
                     }
                 }else {
-
+                    KeyboardUtil.hide(getContext(),view);
                 }
             }
         });
+
+        mTextFlowLayout.setOnFlowTextItemClickListener(this);
+        mRecommendLayout.setOnFlowTextItemClickListener(this);
     }
 
     // 切换到历史和推荐界面
     private void switch2HistoryPage(){
-        if (mTextFlowLayout.getContentSize()!=0) {
-            mHistoryView.setVisibility(View.VISIBLE);
-        }else {
-            mHistoryView.setVisibility(View.GONE);
+        // 获取历史记录
+        if (mSearchPresenter != null) {
+            mSearchPresenter.getHistories();
         }
 
         if (mRecommendLayout.getContentSize()!=0) {
@@ -314,6 +316,14 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
     public void onRetryNetWork() {
         if (mSearchPresenter != null) {
             mSearchPresenter.research();
+        }
+    }
+
+    @Override
+    public void onFlowItemClick(String text) {
+        mSearchEdit.setText(text);
+        if (mSearchPresenter != null) {
+            mSearchPresenter.doSearch(text);
         }
     }
 }

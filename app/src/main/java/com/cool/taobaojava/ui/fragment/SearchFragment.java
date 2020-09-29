@@ -1,10 +1,17 @@
 package com.cool.taobaojava.ui.fragment;
 
 import android.graphics.Rect;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.cool.taobaojava.R;
 import com.cool.taobaojava.base.BaseFragment;
@@ -16,6 +23,7 @@ import com.cool.taobaojava.presenter.impl.SearchPresenter;
 import com.cool.taobaojava.ui.adapter.HomePageContentAdapter;
 import com.cool.taobaojava.ui.adapter.SearchResultAdapter;
 import com.cool.taobaojava.ui.custom.TextFlowLayout;
+import com.cool.taobaojava.utils.KeyboardUtil;
 import com.cool.taobaojava.utils.LogUtils;
 import com.cool.taobaojava.utils.PresentManager;
 import com.cool.taobaojava.utils.SizeUtils;
@@ -44,6 +52,9 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
     private RecyclerView mSearchList;
     private HomePageContentAdapter mSearchAdapter;
     private SmartRefreshLayout mRefresh;
+    private EditText mSearchEdit;
+    private ImageView mSearchRemove;
+    private TextView mSearchCancel;
 
 
     @Override
@@ -64,13 +75,25 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
         mRecommendView = rootView.findViewById(R.id.search_recommend_container);
         mHistoryView = rootView.findViewById(R.id.search_history_container);
         mHistoryDelete = rootView.findViewById(R.id.search_history_delete);
+
         mSearchList = rootView.findViewById(R.id.search_result_list);
+        mSearchList.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
+                outRect.top = SizeUtils.dip2px(getContext(),5);
+                outRect.bottom = SizeUtils.dip2px(getContext(),8);
+            }
+        });
 
         mSearchList.setLayoutManager(new LinearLayoutManager(getContext()));
         mSearchAdapter = new HomePageContentAdapter();
         mSearchList.setAdapter(mSearchAdapter);
 
         mRefresh = rootView.findViewById(R.id.search_refresh);
+
+        mSearchEdit = rootView.findViewById(R.id.search_edit_text);
+        mSearchRemove = rootView.findViewById(R.id.search_remove);
+        mSearchCancel = rootView.findViewById(R.id.search_cancel);
     }
 
     @Override
@@ -83,7 +106,6 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
         mSearchPresenter = PresentManager.getInstance().getmSearchPresenter();
         mSearchPresenter.registerViewCallback(this);
         mSearchPresenter.gerRecommendWords();
-        mSearchPresenter.doSearch("电脑");
         mSearchPresenter.getHistories();
     }
 
@@ -113,6 +135,94 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
                 TicketUtil.toTicketPage(getContext(),dataBean);
             }
         });
+
+        // 点击确定按钮
+        mSearchEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if (i == EditorInfo.IME_ACTION_SEARCH || mSearchPresenter!= null){
+                    String keyword = textView.getText().toString().trim();
+                    if (TextUtils.isEmpty(keyword)) {
+                        return false;
+                    }
+                    mSearchPresenter.doSearch(keyword);
+
+                }
+                return false;
+            }
+        });
+
+        // 监听输入框变化
+        mSearchEdit.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                mSearchRemove.setVisibility(hasInput(true) ? View.VISIBLE : View.GONE );
+                mSearchCancel.setText(hasInput(false)  ? "搜索" : "取消");
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+        // 清除输入框内容
+        mSearchRemove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mSearchEdit.setText("");
+                // 回到历史和推荐界面
+                switch2HistoryPage();
+            }
+        });
+
+        // 点击搜索按钮发起搜索
+        mSearchCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (hasInput(false)){
+                    if (mSearchPresenter != null) {
+                        mSearchPresenter.doSearch(mSearchEdit.getText().toString().trim());
+                        // 隐藏键盘
+                        KeyboardUtil.hide(getContext(),view);
+                    }
+                }else {
+
+                }
+            }
+        });
+    }
+
+    // 切换到历史和推荐界面
+    private void switch2HistoryPage(){
+        if (mTextFlowLayout.getContentSize()!=0) {
+            mHistoryView.setVisibility(View.VISIBLE);
+        }else {
+            mHistoryView.setVisibility(View.GONE);
+        }
+
+        if (mRecommendLayout.getContentSize()!=0) {
+            mRecommendView.setVisibility(View.VISIBLE);
+        }else {
+            mRecommendView.setVisibility(View.GONE);
+        }
+
+        // 内容隐藏
+        mSearchList.setVisibility(View.GONE);
+    }
+
+    private boolean hasInput(boolean containSpace){
+        if (containSpace){
+            return mSearchEdit.getText().toString().length() > 0;
+        }else {
+            return mSearchEdit.getText().toString().trim().length() > 0;
+        }
     }
 
     @Override
@@ -142,14 +252,11 @@ public class SearchFragment extends BaseFragment implements ISearchViewCallback 
 
         mSearchList.setVisibility(View.VISIBLE);
 
-        mSearchAdapter.setData(result.getData().getTbk_dg_material_optional_response().getResult_list().getMap_data());
-        mSearchList.addItemDecoration(new RecyclerView.ItemDecoration() {
-            @Override
-            public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
-                outRect.top = SizeUtils.dip2px(getContext(),5);
-                outRect.bottom = SizeUtils.dip2px(getContext(),8);
-            }
-        });
+        try {
+            mSearchAdapter.setData(result.getData().getTbk_dg_material_optional_response().getResult_list().getMap_data());
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
     }
 
